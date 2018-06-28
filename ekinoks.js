@@ -10,18 +10,16 @@ var version = require("./version");
 var alarm = require("./alarm");
 var time = require("./time");
 var question = require("./question");
-var capture = require('./capture_test');
+var commander = require('./capture_test');
 const fs = require('fs');
 const path = require('path');
 
 
 let testIt = async () => {
-//        answer = await question.ask("Led yanıyor mu?");
-//        console.log(answer);
 
-        capture.ffprobe("10.5.177.46","stream1");
-        console.log(sonuc);
-        
+    await commander.record("10.5.177.47","stream1","1");
+    sonuc = await commander.create_json("10.5.177.47","stream1","1");
+    
 	const browser = await puppeteer.launch({headless: false});
 	const page = await browser.newPage();
 	await login.loginCamera(page, 'http://10.5.176.249:8080');
@@ -149,7 +147,7 @@ let testIt = async () => {
   
   ///////////////////FURKAN////////////////////
   /////KONTROL 53-54-56-57-58-59-60//////
-                    var resolution1 = ["1920 x 1080 (Max:30fps)", "1280 x 720 (Max:30fps)", "1280 x 720 (Max:25fps)", "1920 x 1080 (Max:25fps)"];
+        var resolution1 = ["1920 x 1080 (Max:30fps)", "1280 x 720 (Max:30fps)", "1280 x 720 (Max:25fps)", "1920 x 1080 (Max:25fps)"];
         var fps1 = ["15", "10", "20", "12.5"];
         var resolution2 = ["640 x 368", "480 x 272", "320 x 180", "640 x 368"];
         var fps2 = ["5", "15", "20", "12.5"];
@@ -197,7 +195,7 @@ let testIt = async () => {
                       
                       
                       
-                      
+                     
                       
                       
         await page.waitFor(3000);

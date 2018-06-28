@@ -1,32 +1,33 @@
- 
 const fs = require('fs');
 const child_process = require("child_process");
 
 (function() {
        
-        module.exports.ffprobe =  function(url,stream,testNumber)
+    module.exports.record =  function(url,stream,test_num)
         {
-            var command = "ffmpeg -y -i rtsp://"+url+"/"+stream+" -acodec copy -t 00:00:05 -vcodec copy "+testNumber+".mp4";
-            var command2 = "ffprobe -v error  -show_entries stream=avg_frame_rate -show_format -show_streams "+testNumber+".mp4 > output.txt 2>&1";
-            
-            //KAYIT AL
-           child_process.execSync(command,function (error, stdout, stderr) 
-                {
-                    if (error) throw error;
-                    console.log(stderr);
-                });
-           
-            //KAYIT DOSYASI ÖZELLİKLERİNİ ÇIKAR
-           const islem = child_process.execSync(command2, function (error, stdout, stderr) 
-                {
-                    if (error) throw error;
-                    console.log(stderr);
-                });
-    
-            sonuc = fs.readFileSync("output.txt","utf8");
-            return sonuc;
-        }	
-    
+            var command = "ffmpeg -y -i rtsp://"+url+"/"+stream+" -acodec copy -t 00:00:05 -vcodec copy "+test_num+".mp4";
+            child_process.execSync(command);
+        }
+        
+    module.exports.create_json = function(url,stream,test_num)
+        {
+            var command = "ffprobe -v error -print_format json -show_entries stream=avg_frame_rate -show_format -show_streams "+test_num+".mp4 > ffmpeg.json 2>&1";
+            child_process.execSync(command);     
+        }
+        
+    module.exports.write = function(command)
+        {
+           var buffer = child_process.execSync(command);
+           return buffer.toString();
+        }
+       
+    module.exports.read_specs = function(setting)
+        {
+            var contents = fs.readFileSync("ffmpeg.json");  
+            var jsonContent = JSON.parse(contents);
+            var ffmpeg_spec = jsonContent["streams"][0][setting];
+            return ffmpeg_spec;
+        }    
 }());
 
 
