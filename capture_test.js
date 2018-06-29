@@ -11,7 +11,7 @@ const child_process = require("child_process");
         
     module.exports.create_json = function(url,stream,test_num)
         {
-            var command = "ffprobe -v error -print_format json -show_entries stream=avg_frame_rate -show_format -show_streams "+test_num+".mp4 > "+"specs_test"+test_num+".json"+" 2>&1";
+            var command = "ffprobe -v quiet -print_format json -show_entries stream=avg_frame_rate -show_format -show_streams "+test_num+".mp4 > "+"specs_test"+test_num+".json"+" 2>&1";
             child_process.execSync(command);     
         }
         

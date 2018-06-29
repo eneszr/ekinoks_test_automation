@@ -1,5 +1,5 @@
+var url = "10.5.177.47";
 const puppeteer = require('puppeteer');
-
 var nav = require("./navigate");
 var encoding = require("./encoding");
 var encodingLow = require("./encodinglow");
@@ -8,7 +8,27 @@ var camera = require("./camera");
 var version = require("./version");
 var alarm = require("./alarm");
 var time = require("./time");
-async function dene(page,i,res)
+var capture_test = require('./capture_test');
+const child_process = require("child_process");
+var question = require("./question");
+
+
+
+async function test_ffmpeg_res(width_test,height_test,stream,test_num)
+{
+    await capture_test.record(url,stream,test_num);
+    await capture_test.create_json(url,stream,test_num);
+    width = await capture_test.read_specs("width",test_num);
+    height = await capture_test.read_specs("height",test_num);
+    console.log("İstenen çözünürlük = "+width_test+"x"+height_test);
+    console.log("Ölçülen çözünürlük = "+width+"x"+height);
+    if (width == width && height == height_test)
+    { 
+        console.log("Çözünürlükler Eşit");
+    }
+    else console.log("Çözünürlükler Farklı");
+}
+async function test_set_res_fps(page,i,res)
 {
         var resolution1 = ["1920 x 1080 (Max:30fps)", "1280 x 720 (Max:30fps)", "1280 x 720 (Max:25fps)", "1920 x 1080 (Max:25fps)"];
         var fps1 = ["15", "10", "20", "12.5"];
@@ -36,7 +56,7 @@ async function dene(page,i,res)
     
 }
 
-async function dene2(page,i,res)
+async function test_set_res_fps_DOM(page,i,res)
 {
         var resolution1 = ["1920 x 1080 (Max:30fps)", "1280 x 720 (Max:30fps)", "1280 x 720 (Max:25fps)", "1920 x 1080 (Max:25fps)"];
         var fps1 = ["15", "10", "20", "12.5"];
@@ -72,6 +92,19 @@ async function dene2(page,i,res)
 	module.exports.start_1 = async function(page, test_number) {
 	
             switch(test_number){
+                case "14" : {await test_ffmpeg_res("1920","1080","stream1m","14"); break;}
+                case "15" : {await test_ffmpeg_res("640","368","stream2m","14"); break;}
+                case "16" : {await test_ffmpeg_res("1920","1080","stream1","14"); break;}
+                case "17" : {await test_ffmpeg_res("640","368","stream2","14"); break;}
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 case "22": {console.log(" ");
                         console.log("Kontrol 22 STARTED");
                         await nav.toEncodingHigh(page);
@@ -152,6 +185,16 @@ async function dene2(page,i,res)
                       await resolution.test_fps2(page);
                     break;
                 }
+                case "32": {
+                    var command = 'vlc rtsp://10.5.177.47/stream1';
+ proc =await require('child_process').exec(command);
+select = await question.ask("Görüntü Geldi mi ? e/h");
+break;
+                    //await page.waitFor(5000);
+                    //command = "sudo killall vlc"
+                    //await capture_test.write(command);
+                    
+                }
                 case "37": {//TEST 37
                       console.log(" ");  
                       console.log("Test 37 Started");
@@ -189,28 +232,28 @@ async function dene2(page,i,res)
                       await time.test_ntp_server1(page, "pool.ntp.org");
                     break;
                 }
-                case "53": {await dene(page,0,1);
+                case "53": {await test_set_res_fps(page,0,1);
                     break;
                 }
-                case "54": {await dene(page,1,1);
+                case "54": {await test_set_res_fps(page,1,1);
                     break;
                 }
-                case "55": {await dene(page,2,1);
+                case "55": {await test_set_res_fps(page,2,1);
                     break;
                 }
-                case "56": {await dene(page,3,1);
+                case "56": {await test_set_res_fps(page,3,1);
                     break;
                 }
-                case "57": {await dene(page,0,2);
+                case "57": {await test_set_res_fps(page,0,2);
                     break;
                 }
-                case "58": {await dene(page,1,2);
+                case "58": {await test_set_res_fps(page,1,2);
                     break;
                 }
-                case "59": {await dene(page,2,2);
+                case "59": {await test_set_res_fps(page,2,2);
                     break;
                 }
-                case "60": {await dene(page,3,2);
+                case "60": {await test_set_res_fps(page,3,2);
                     break;
                 }
                 default: console.log("Test "+test_number+" blunamadı lütfen tekrar deneyin..");
@@ -222,28 +265,28 @@ async function dene2(page,i,res)
 	module.exports.start_2 = async function(page, test_number) {
             switch(test_number){
                 
-                case "61": {await dene2(page,0,1);
+                case "61": {await test_set_res_fps_DOM(page,0,1);
                     break;
                 }
-                case "62": {await dene2(page,1,1);
+                case "62": {await test_set_res_fps_DOM(page,1,1);
                     break;
                 }
-                case "63": {await dene2(page,2,1);
+                case "63": {await test_set_res_fps_DOM(page,2,1);
                     break;
                 }
-                case "64": {await dene2(page,3,1);
+                case "64": {await test_set_res_fps_DOM(page,3,1);
                     break;
                 }
-                case "65": {await dene2(page,0,2);
+                case "65": {await test_set_res_fps_DOM(page,0,2);
                     break;
                 }
-                case "66": {await dene2(page,1,2);
+                case "66": {await test_set_res_fps_DOM(page,1,2);
                     break;
                 }
-                case "67": {await dene2(page,2,2);
+                case "67": {await test_set_res_fps_DOM(page,2,2);
                     break;
                 }
-                case "68": {await dene2(page,3,2);
+                case "68": {await test_set_res_fps_DOM(page,3,2);
                     break;
                 }
                 default: await console.log("Test "+test_number+" blunamadı lütfen tekrar deneyin..");

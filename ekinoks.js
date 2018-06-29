@@ -10,7 +10,7 @@ var version = require("./version");
 var alarm = require("./alarm");
 var time = require("./time");
 var question = require("./question");
-var commander = require('./capture_test');
+var capture_test = require('./capture_test');
 const fs = require('fs');
 const path = require('path');
 var tests = require('./tests');
@@ -52,9 +52,9 @@ async function interface (page)
 }    
 let testIt = async () => {
 
-   /* await commander.record("10.5.177.47","stream1","1");
-    sonuc = await commander.create_json("10.5.177.47","stream1","1");
-    console.log(commander.read_specs("width","1"));
+   /* await capture_test.record("10.5.177.47","stream1","1");
+    sonuc = await capture_test.create_json("10.5.177.47","stream1","1");
+    console.log(capture_test.read_specs("width","1"));
     */
 	const browser = await puppeteer.launch({headless: false});
 	const page = await browser.newPage();
