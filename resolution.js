@@ -56,7 +56,7 @@
 	}
 	module.exports.apply = async function(page){
             await page.click(APPLY_BUTTON_SELECTOR);
-            await page.waitFor(2000);
+            await page.waitForSelector(POPUP_SELECTOR,'visible');
             await page.click(POPUP_SELECTOR);
             await page.waitFor(1000);
         

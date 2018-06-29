@@ -11,7 +11,7 @@ const child_process = require("child_process");
         
     module.exports.create_json = function(url,stream,test_num)
         {
-            var command = "ffprobe -v error -print_format json -show_entries stream=avg_frame_rate -show_format -show_streams "+test_num+".mp4 > ffmpeg.json 2>&1";
+            var command = "ffprobe -v error -print_format json -show_entries stream=avg_frame_rate -show_format -show_streams "+test_num+".mp4 > "+"specs_test"+test_num+".json"+" 2>&1";
             child_process.execSync(command);     
         }
         
@@ -21,9 +21,10 @@ const child_process = require("child_process");
            return buffer.toString();
         }
        
-    module.exports.read_specs = function(setting)
-        {
-            var contents = fs.readFileSync("ffmpeg.json");  
+    module.exports.read_specs = function(setting,test_num)
+        {   
+            var json_name = "specs_test"+test_num+".json";
+            var contents = fs.readFileSync(json_name);  
             var jsonContent = JSON.parse(contents);
             var ffmpeg_spec = jsonContent["streams"][0][setting];
             return ffmpeg_spec;
