@@ -18,16 +18,51 @@ async function test_ffmpeg_res(width_test,height_test,stream,test_num)
 {
     await capture_test.record(url,stream,test_num);
     await capture_test.create_json(url,stream,test_num);
-    width = await capture_test.read_specs("width",test_num);
-    height = await capture_test.read_specs("height",test_num);
+    coded_width = await capture_test.read_specs("coded_width",test_num);
+    coded_height = await capture_test.read_specs("coded_height",test_num);
+    avg_frame_rate = await capture_test.read_specs("avg_frame_rate",test_num);//ölçülen kare hızı
     console.log("İstenen çözünürlük = "+width_test+"x"+height_test);
-    console.log("Ölçülen çözünürlük = "+width+"x"+height);
-    if (width == width && height == height_test)
+    console.log("Gerçekleşen çözünürlük = "+coded_width+"x"+coded_height);
+    
+    if (coded_width == width_test && coded_height == height_test)
     { 
         console.log("Çözünürlükler Eşit");
     }
     else console.log("Çözünürlükler Farklı");
 }
+
+
+
+async function test_ffmpeg_res_fps(stream,test_num)
+{
+    await capture_test.record(url,stream,test_num);
+    await capture_test.create_json(url,stream,test_num);
+    width = await capture_test.read_specs("width",test_num); //istenen yükseklik
+    height = await capture_test.read_specs("height",test_num); //istenen genişlik
+    coded_width = await capture_test.read_specs("coded_width",test_num); //gerçekleşen yükseklik
+    coded_height = await capture_test.read_specs("coded_height",test_num); //gerçekleşen genişlik
+    r_frame_rate = await capture_test.read_specs("r_frame_rate",test_num);//istenen kare hızı
+    avg_frame_rate = await capture_test.read_specs("avg_frame_rate",test_num);//gerçekleşen kare hızı
+    console.log("İstenen çözünürlük = "+width+"x"+height);
+    console.log("Gerçekleşen çözünürlük = "+coded_width+"x"+coded_height);
+    
+    if (coded_width == width && coded_height == height)
+    { 
+        console.log("Çözünürlükler Eşit");
+    }
+    else console.log("Çözünürlükler Farklı");
+
+    console.log("İstenen kare hızı = "+r_frame_rate);
+    console.log("Gerçekleşen kare hızı = "+avg_frame_rate);
+    
+    if (avg_frame_rate == r_frame_rate )
+    { 
+        console.log("Kare Hızı Eşit");
+    }
+    else console.log("Kare Hızı Farklı");
+}
+
+
 async function test_set_res_fps(page,i,res)
 {
         var resolution1 = ["1920 x 1080 (Max:30fps)", "1280 x 720 (Max:30fps)", "1280 x 720 (Max:25fps)", "1920 x 1080 (Max:25fps)"];
@@ -85,9 +120,6 @@ async function test_set_res_fps_DOM(page,i,res)
 }
  
  (function() {
-	const LOGIN_USERNAME_SELECTOR = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > div > div:nth-child(1) > div > div > input';
-	const LOGIN_PASSWORD_SELECTOR = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > div > div:nth-child(2) > div > div > input';
-	const LOGIN_BUTTON_SELECTOR = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > div > div:nth-child(3) > div > div > button';
 	
 	module.exports.start_1 = async function(page, test_number) {
 	
@@ -186,7 +218,7 @@ async function test_set_res_fps_DOM(page,i,res)
                     break;
                 }
                 case "32": {
-                    var command = 'vlc rtsp://10.5.177.47/stream1';
+                    var command = 'vlc rtsp://'+url+'/stream1';
  proc =await require('child_process').exec(command);
 select = await question.ask("Görüntü Geldi mi ? e/h");
 break;
@@ -233,27 +265,35 @@ break;
                     break;
                 }
                 case "53": {await test_set_res_fps(page,0,1);
+                    await test_ffmpeg_res_fps("stream1",53);
                     break;
                 }
                 case "54": {await test_set_res_fps(page,1,1);
+                    await test_ffmpeg_res_fps("stream1",54);
                     break;
                 }
                 case "55": {await test_set_res_fps(page,2,1);
+                    await test_ffmpeg_res_fps("stream1",55);
                     break;
                 }
                 case "56": {await test_set_res_fps(page,3,1);
+                    await test_ffmpeg_res_fps("stream1",56);
                     break;
                 }
                 case "57": {await test_set_res_fps(page,0,2);
+                    await test_ffmpeg_res_fps("stream2",57);
                     break;
                 }
                 case "58": {await test_set_res_fps(page,1,2);
+                    await test_ffmpeg_res_fps("stream2",58);
                     break;
                 }
                 case "59": {await test_set_res_fps(page,2,2);
+                    await test_ffmpeg_res_fps("stream2",59);
                     break;
                 }
                 case "60": {await test_set_res_fps(page,3,2);
+                    await test_ffmpeg_res_fps("stream2",60);
                     break;
                 }
                 default: console.log("Test "+test_number+" blunamadı lütfen tekrar deneyin..");
