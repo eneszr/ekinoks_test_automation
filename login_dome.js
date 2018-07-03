@@ -6,7 +6,7 @@
 	module.exports.loginCamera = async function(page, camurl) {
 		await page.goto(camurl, {"waitUntil": "networkidle2"});
 		console.log("logging into " + camurl);
-            await page.waitForSelector(LOGIN_USERNAME_SELECTOR,'visible');
+		
 		await page.click(LOGIN_USERNAME_SELECTOR);
 		await page.keyboard.type("admin");
 		await page.click(LOGIN_PASSWORD_SELECTOR);
@@ -16,8 +16,6 @@
 		
 		console.log("We're in!");
 		return {};
-	}
-	
+	}	
 	
 }());
-
