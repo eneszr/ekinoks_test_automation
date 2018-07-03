@@ -10,6 +10,7 @@ var time = require("./time");
 var capture_test = require('./capture_test');
 const child_process = require("child_process");
 var question = require("./question");
+var rtsp = require('./rtsp');
 var ip = '0.0.0.0';
 var results;
 ///////////FOR DOME CAMERAS///////////
@@ -46,9 +47,6 @@ select = await question.ask("Görüntü Geldi mi ? e/h");
     if (select=='e') return 1;
     else return 0;
 }
-
-
-
 async function test_ffmpeg_res_fps(stream,test_num)
 {
     await capture_test.record(ip,stream,test_num);
@@ -77,8 +75,6 @@ async function test_ffmpeg_res_fps(stream,test_num)
     }
     else console.log("Kare Hızı Farklı");
 }
-
-
 async function test_set_res_fps(page,i,res)
 {
         var resolution1 = ["1920 x 1080 (Max:30fps)", "1280 x 720 (Max:30fps)", "1280 x 720 (Max:25fps)", "1920 x 1080 (Max:25fps)"];
@@ -104,7 +100,6 @@ async function test_set_res_fps(page,i,res)
     }
     
 }
-
 async function test_set_res_fps_DOM(page,i,res)
 {
         var resolution1 = ["1920 x 1080 (Max:30fps)", "1280 x 720 (Max:30fps)", "1280 x 720 (Max:25fps)", "1920 x 1080 (Max:25fps)"];
@@ -130,7 +125,6 @@ async function test_set_res_fps_DOM(page,i,res)
     }
     
 }
- 
  (function() {
 	
 	module.exports.start_1 = async function(page, test_number,url) {
@@ -181,7 +175,7 @@ async function test_set_res_fps_DOM(page,i,res)
                         console.log("Control 25 STARTED");
                         await nav.toCamera(page,ip);
                         await camera.set_ir_filter_mode(page,"gece");
-                        await camera.set_ir_filter_transition(page,"oto");
+                        await camera.set_ir_filter_transition(page,"manu");
                         await camera.ir_filter_apply(page);
                         console.log("OPTIONS SETTED ");
                     break;
@@ -282,21 +276,31 @@ async function test_set_res_fps_DOM(page,i,res)
                     break;
                 }
                 case "39": {//TEST 39
-                      console.log("Test39 Started");
+                      console.log("Test 39 Started");
                       await nav.toAlarm(page,ip); 
                       await alarm.set_motion_detector(page,"a");
                       await alarm.set_apply(page);
+                      console.log("Kameranın görüntüsünü DEFNE üzerinden izleyin. Kameranın önüne geçerek SEI Alarm Bilgisinin geldiği ve sol üst köşede kırmızı fontlu alarm bilgisinin gelmediğini gözlemleyin");
+                      select1 = await question.ask("Kameranın önüne geçildiğinde SEI Alarm bilgisi geldi mi ? e/h");
+                      select2 = await question.ask("Sol üst köşede kırmızı fontlu alarm bilgisi geldi mi? e/h");
+                       if ( (select1 == "e" || select1 == "E") && (select2 =="e"|| select2=="E"))
+                          console.log("Test Başarılı");
+                      else
+                          console.log("Test Başarısız");
                     break;
                 }
                 case "40":{//TEST 40
+                      console.log("Test 40 Started");
                       await nav.toAlarm(page,ip);
                       var is_active = await alarm.test_alarm_active(page);
                       if(!is_active) await alarm.set_alarm_active(page);
                       await alarm.set_motion_detector("k");
+                      await alarm.set_motion_threshold(page, 50);
+                      await alarm.set_apply(page);
                       console.log("Kameranın görüntüsünü DEFNE üzerinden izleyin. Kameranın önüne geçerek SEI Alarm Bilgisinin geldiği ve sol üst köşede kırmızı fontlu alarm bilgisinin gelmediğini gözlemleyin");
                       select1 = await question.ask("Kameranın önüne geçildiğinde SEI Alarm bilgisi geldi mi ? e/h");
                       select2 = await question.ask("Sol üst köşede kırmızı fontlu alarm bilgisi geldi mi? e/h");
-                       if ( (select1 == "h" || select1 == "H") && (select2 =="e"|| select2=="E"))
+                       if ( (select2 == "h" || select2 == "H") && (select1 =="e"|| select1=="E"))
                           console.log("Test Başarılı");
                       else
                           console.log("Test Başarısız");
@@ -312,9 +316,10 @@ async function test_set_res_fps_DOM(page,i,res)
                     break;
                 }
                 case "42": {//TEST 42
-                      await nav.toCamera(page);
-                      await camera.set_ir_filter_mode("oto");
+                      await nav.toCamera(page,ip);
+                      await camera.set_ir_filter_mode(page,"oto");
                       await camera.ir_filter_apply(page);
+                      await nav.toResolution(page,ip);
                       var command = 'vlc rtsp://'+ip+'/stream1';
                       proc =await require('child_process').exec(command);
                       select1 = await question.ask("Kamera gündüz modunda mı ? e/h");
@@ -324,21 +329,24 @@ async function test_set_res_fps_DOM(page,i,res)
                       console.log("Lütfen kameranızın merceğinin önündeki cismi kaldırın...");
                       console.log("Vlc programı üzerinden kamera modunu kontrol edin...");
                       select3 = await question.ask("Kamera gündüz modunda mı ? e/h");
-                      await camera.set_ir_filter_mode("manuel");
+                      await nav.toCamera(page,ip);
+                      await camera.set_ir_filter_mode(page,"manuel");
                       await camera.ir_filter_apply(page);
                       if ((select1 == "e" || select1 == "E")&&(select2 == "e" || select2 == "E")&&(select3 == "e" || select3 == "E"))
                           console.log("Test 42 Başarılı");
                       else
                           console.log("Test 42 Başarısız");
+                      break;
                 }
                 case "43": {//TEST 43
-                      await nav.toLive(page);
+                      await nav.toLive(page,ip);
                       console.log("Lütfen Chrome uygulaması üzerinden kamera görüntüsünün gelip gelmediğine bakın ...");
                       select1 = await question.ask("Görüntü geldi mi ? e/h");
                       if (select1=="e"||select1=="E")
                           console.log("Test Başarılı");
                       else
                           console.log("Test Başarısız");
+                      break;
                                          
                 }
                 case "44":{
@@ -349,6 +357,7 @@ async function test_set_res_fps_DOM(page,i,res)
                           console.log("Test Başarılı");
                       else
                           console.log("Test Başarısız");
+                      break;
                 }
                 case "45":{
                       console.log("Lütfen aşağıdaki testi uygulayın.. Ardından otomatik test yazılımını tekrardan başlatın ve test sonuçlarını otomatik test yazılımına bildirmek için bu testin numarasını tuşlayın");
@@ -358,6 +367,7 @@ async function test_set_res_fps_DOM(page,i,res)
                           console.log("Test Başarılı");
                       else
                           console.log("Test Başarısız");
+                      break;
                 }
                 case "46": {//TEST 46
                       console.log("");
@@ -374,6 +384,7 @@ async function test_set_res_fps_DOM(page,i,res)
                           console.log("Test Başarılı");
                       else
                           console.log("Test Başarısız");
+                      break;
                     
                 }
                 case "48":{
@@ -395,37 +406,43 @@ async function test_set_res_fps_DOM(page,i,res)
                           console.log("Test Başarısız");
                 }
                 case "50":{
-                      await nav.toCamera(page);
-                      var command = 'vlc rtsp://'+ip+'/stream2';
+                      await nav.toCamera(page,ip);
+                      var command = 'vlc rtsp://'+ip+'/stream1';
                       proc =await require('child_process').exec(command);
+                      await page.waitFor(9000);
                       await camera.focus_plus(page);
                       select1 = await question.ask("Kameranın focus ayarında bir değişiklik var mı ? e/h");
                       if (select1=="e"||select1=="E")
                           console.log("Test Başarılı");
                       else
                           console.log("Test Başarısız");
+                      break;
                 }
                 case "51":{
-                      await nav.toCamera(page);
-                      var command = 'vlc rtsp://'+ip+'/stream2';
+                      await nav.toCamera(page,ip);
+                      var command = 'vlc rtsp://'+ip+'/stream1';
                       proc =await require('child_process').exec(command);
+                      await page.waitFor(9000);
                       await camera.focus_minus(page);
                       select1 = await question.ask("Kameranın focus ayarında bir değişiklik var mı ? e/h");
                       if (select1=="e"||select1=="E")
                           console.log("Test Başarılı");
                       else
                           console.log("Test Başarısız");
+                      break;
                 }
                 case "52":{
-                      await nav.toCamera(page);
-                      var command = 'vlc rtsp://'+ip+'/stream2';
+                      await nav.toCamera(page,ip);
+                      var command = 'vlc rtsp://'+ip+'/stream1';
                       proc =await require('child_process').exec(command);
+                      await page.waitFor(9000);
                       await camera.focus_one_shot(page);
                       select1 = await question.ask("Kameranın focus ayarı düzeldi mi ? e/h");
                       if (select1=="e"||select1=="E")
                           console.log("Test Başarılı");
                       else
                           console.log("Test Başarısız");
+                      break;
                 }
                 case "53": {await test_set_res_fps(page,0,1);
                     await test_ffmpeg_res_fps("stream1",53);
@@ -458,6 +475,61 @@ async function test_set_res_fps_DOM(page,i,res)
                 case "60": {await test_set_res_fps(page,3,2);
                     await test_ffmpeg_res_fps("stream2",60);
                     break;
+                }
+                case "61": {
+                    console.log("Test 61 Started");
+                    await nav.toRTSP(page,ip);
+                    await rtsp.rtsp_set(page, "Tanımlı kullanıcı", "admin",1);
+                    var command = 'vlc rtsp://'+ip+'/stream1';
+                    proc =await require('child_process').exec(command)
+                    break;
+                }
+                case "62": {
+                    console.log("Test 62 Started");
+                    await nav.toRTSP(page,ip);
+                    await rtsp.rtsp_set(page, "Tanımlı kullanıcı", "admin",1);
+                    var command = 'vlc rtsp://'+ip+'/stream2';
+                    proc =await require('child_process').exec(command)
+                    break;
+                }
+                case "63": {
+                    console.log("Test 63 Started");
+                    await nav.toRTSP(page,ip);
+                    await rtsp.rtsp_set_no(page,0);
+                    var command = 'vlc rtsp://'+ip+'/stream1';
+                    proc =await require('child_process').exec(command)
+                    break;
+                }
+                case "65": {//TEST 65
+                      console.log("Test 65 Started");
+                      await nav.toAlarm(page,ip); 
+                      await alarm.set_motion_detector(page,"a");
+                      await alarm.set_motion_threshold(page, 50);
+                      await alarm.set_apply(page);
+                      console.log("Kameranın görüntüsünü DEFNE üzerinden izleyin. Kameranın önüne geçerek SEI Alarm Bilgisinin geldiği ve sol üst köşede kırmızı fontlu alarm bilgisinin gelmediğini gözlemleyin");
+                      select1 = await question.ask("Kameranın önüne geçildiğinde SEI Alarm bilgisi geldi mi ? e/h");
+                      select2 = await question.ask("Sol üst köşede kırmızı fontlu alarm bilgisi geldi mi? e/h");
+                       if ( (select1 == "e" || select1 == "E") && (select2 =="e"|| select2=="E"))
+                          console.log("Test Başarılı");
+                      else
+                          console.log("Test Başarısız");
+                    break;
+                }
+                case "66":{//TEST 66
+                      console.log("Test 66 Started");
+                      await nav.toAlarm(page,ip);
+                      var is_active = await alarm.test_alarm_active(page);
+                      if(!is_active) await alarm.set_alarm_active(page);
+                      await alarm.set_motion_detector("k");
+                      await alarm.set_apply(page);
+                      console.log("Kameranın görüntüsünü DEFNE üzerinden izleyin. Kameranın önüne geçerek SEI Alarm Bilgisinin geldiği ve sol üst köşede kırmızı fontlu alarm bilgisinin gelmediğini gözlemleyin");
+                      select1 = await question.ask("Kameranın önüne geçildiğinde SEI Alarm bilgisi geldi mi ? e/h");
+                      select2 = await question.ask("Sol üst köşede kırmızı fontlu alarm bilgisi geldi mi? e/h");
+                       if ( (select1 == "e" || select1 == "E") && (select2 =="h"|| select2=="H"))
+                          console.log("Test Başarılı");
+                      else
+                          console.log("Test Başarısız");
+                    
                 }
                 default: console.log("Test "+test_number+" blunamadı lütfen tekrar deneyin..");
                 

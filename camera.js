@@ -11,11 +11,11 @@
         const ONE_SHOT_FOCUS_SELECTOR = '#one_push_af';
         module.exports.focus_plus = async function(page)
         {
-            await page.click(FOCUS_PLUS_SELECTOR,{delay:1000});
+            await page.click(FOCUS_PLUS_SELECTOR,{delay:4000});
         }
         module.exports.focus_minus = async function(page)
         {
-            await page.click(FOCUS_MINUS_SELECTOR,{delay:1000});
+            await page.click(FOCUS_MINUS_SELECTOR,{delay:4000});
         }
         module.exports.focus_one_shot = async function(page)
         {
@@ -23,11 +23,13 @@
         }
 	module.exports.set_ir_filter_mode = async function(page, set) 
         {
-            await page.click(IR_TAB_SELECTOR);
-            await page.waitForSelector(IR_FILTER_MODE,'visible');
-            await page.click(IR_FILTER_MODE);
+            await page.waitFor(2000);
+            await page.click(IR_TAB_SELECTOR); console.log("1");
+            await page.waitFor(1000);
+            await page.waitForSelector(IR_FILTER_MODE,'visible');console.log("2");
+            await page.click(IR_FILTER_MODE);console.log("3");
             await page.keyboard.type(set);
-            await page.keyboard.type('Enter');
+            await page.keyboard.press('Enter');
             
 	}
 	module.exports.set_ir_filter_transition = async function(page, set)
@@ -35,7 +37,7 @@
             await page.waitForSelector(IR_FILTER_TRANSITION,'visible');
             await page.click(IR_FILTER_TRANSITION);
             await page.keyboard.type(set);
-            await page.keyboard.type('Enter');
+            await page.keyboard.press('Enter');
             
         }
         
@@ -44,7 +46,7 @@
             await page.waitForSelector(IR_FILTER_THRESHOLD,'visible');
             await page.click(IR_FILTER_THRESHOLD);
             await page.keyboard.type(set);
-            await page.keyboard.type('Enter');
+            await page.keyboard.press('Enter');
           
         }
         
@@ -57,12 +59,15 @@
 	}
 	
 	module.exports.test_ir_filter_mode = async function(page, set) 
-        { console.log("1");
-            await page.waitForSelector(IR_SELECTOR_UP,'visible');console.log("2");
-            await page.waitForSelector('#ircf_stat','visible');console.log("3");
-            await page.waitFor(1000);console.log("4");
-            const input = await page.$(IR_SELECTOR_UP);console.log("5");
-            const inpot = await input.$eval('#ircf_stat' , node => node.selectedIndex);console.log("6");
+        {
+            await page.waitFor(2000);
+            await page.click(IR_TAB_SELECTOR); console.log("1");
+            await page.waitFor(1000);
+            await page.waitForSelector(IR_SELECTOR_UP,'visible');
+            await page.waitForSelector('#ircf_stat','visible');
+            await page.waitFor(1000);
+            const input = await page.$(IR_SELECTOR_UP);
+            const inpot = await input.$eval('#ircf_stat' , node => node.selectedIndex);console.log(inpot);
             if(inpot == set)
               {
                 console.log("IR Filter Mode Value is        TRUE");
@@ -78,7 +83,7 @@
         {
             await page.waitForSelector(IR_SELECTOR_UP,'visible');
              const input = await page.$(IR_SELECTOR_UP);
-            const inpot = await input.$eval('#auto_ircf_stat' , node => node.selectedIndex);
+            const inpot = await input.$eval('#auto_ircf_stat' , node => node.selectedIndex);console.log(inpot);
             if(inpot == set)
               {
                 console.log("IR Filter Transition Value is  TRUE");

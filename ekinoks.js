@@ -60,16 +60,9 @@ async function interface (page)
 }    
 let testIt = async () => {
 
-    module.exports.cam_ip = async function() {
-		
-	
-		return ip;
-	}
-   /* await capture_test.record("10.5.177.47","stream1","1");
-    sonuc = await capture_test.create_json("10.5.177.47","stream1","1");
-    console.log(capture_test.read_specs("width","1"));
-    */
-   ip = '10.5.177.50'//await question.ask("Test edilecek kameranın ip adresini girin");
+ 
+  
+   ip = '10.5.177.52'//await question.ask("Test edilecek kameranın ip adresini girin");
    url = 'http://'+ ip + ':8080';
    select_cam_type = await question.ask("Kamera tipini seçin Sabit Kamera => 1 DOM => 2");
 	
@@ -90,13 +83,8 @@ let testIt = async () => {
             console.log("Hatalı tuşladınız. Lütfen tekrar deneyin..");
             await testIt();
         }
-
-        
-        for (let i = 46; i < 61; i++){
-                        await tests.start_1(page,i,ip)
-                        await page.waitFor(2000);
-                        }
-select = await question.ask("Test Yapmak İçin T'ye Çıkış için C ye basınz");
+/*
+ select = await question.ask("Test Yapmak İçin T'ye Çıkış için C ye basınz");
         console.clear();
         if (select == "c" || select == "C") 
         {
@@ -109,10 +97,10 @@ select = await question.ask("Test Yapmak İçin T'ye Çıkış için C ye basın
         else if (select == "t" || select== "T") await interface(page);
         else {console.log("Hatalı Tuşladınız Çıkmak İçin C ye basabilirsiniz. Test seçme aşamasına geçildi..");
         await interface(page);}
+  */
+  await tests.start_1(page,"52",ip);
   
-  
-  
-        await page.waitFor(3000);
+        await page.waitFor(30000);
 	await page.close();
 	await browser.close();
   

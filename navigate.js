@@ -40,6 +40,7 @@ URL = ip;
                 URL = ip;
                 await page.goto('http://'+URL+':8080/#/tabs/ptz_next.json');
                 await page.waitForSelector(SELECTOR_camera,'visible');
+                console.log("navigate complated");
 	}
 	module.exports.toAlarm = async function(page,ip) {
                 URL = ip;
@@ -51,5 +52,10 @@ URL = ip;
                 await page.goto('http://'+URL+':8080/#/tabs/time_settings.json');
                 await page.waitForSelector(SELECTOR_child2_select,'visible');
 	}
+	module.exports.toRTSP = async function(page,ip){
+                URL = ip;
+                await page.goto('http://'+URL+':8080/#/tabs/rtsp_manag.json');
+                await page.waitForSelector(SELECTOR_child2_select,'visible');
+    }
 	
 }());
