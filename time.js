@@ -1,6 +1,6 @@
   (function() {
 
-        const NTP_SERVER1_SELECTOR_UP = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > div > div:nth-child(4) > div > div';
+        const NTP_SERVER1_SELECTOR_UP = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(3) > div > div';
 	
                
 	module.exports.test_ntp_server1 = async function(page , set) 

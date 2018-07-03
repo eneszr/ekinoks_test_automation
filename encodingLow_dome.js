@@ -1,4 +1,4 @@
-  (function() {
+(function() {
 
         const IFRAME_SELECTOR = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(1) > div > div > input';
 	const APPLY_BUTTON_SELECTOR = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(9) > div > div > button';
@@ -6,11 +6,6 @@
         const BIT_CON_MET = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(2) > div > div > select';
         const CODDING_QUAL = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(3) > div > div > select';
         const BIT_RATE = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(6) > div > div > input';
-        ///FOR TESTS
-        const IFRAME_SELECTOR_UP = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(1) > div > div';
-        const BIT_CON_MET_UP = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(2) > div > div';
-        const CODDING_QUAL_UP = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(3) > div > div';
-        const BIT_RATE_UP = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(6) > div > div';
                
         
 	module.exports.set_intraframe = async function(page, iFrameInterval) {
@@ -50,17 +45,17 @@
 	
 	module.exports.apply = async function(page){
             await page.click(APPLY_BUTTON_SELECTOR);
-            await page.waitForSelector(POPUP_SELECTOR,'visible');
+            await page.waitFor(2000);
             await page.click(POPUP_SELECTOR);
             await page.waitFor(1000);
             
         }
         
         
-        //////////////  ENCODİNG LOW TEST ////////////////
+        //////////////  ENCODİNG LOW TEST FOR Doc2-34 ////////////////
         
-          module.exports.test_intraframe = async function(page) {
-                        const input1 = await page.$(IFRAME_SELECTOR_UP);
+          module.exports.test_intraframe_2 = async function(page) {
+                        const input1 = await page.$('body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(1) > div > div');
                         const inpot1 = await input1.$eval('.form-control' , node => node.value);
                         if(inpot1 == 12)
                         {
@@ -73,10 +68,10 @@
                         }
             
 	}
-	module.exports.test_bit_con = async function(page, set)
+	module.exports.test_bit_con_2 = async function(page, set)
         {
             
-            const input2 = await page.$(BIT_CON_MET_UP);
+            const input2 = await page.$('body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(2) > div > div');
                         const inpot2 = await input2.$eval('.form-control' , node => node.selectedIndex);
                         if(inpot2 == 2)
                         {
@@ -90,10 +85,10 @@
             
         }     
       
-        module.exports.test_bit_rate = async function(page, set) {
-		const input4 = await page.$(BIT_RATE_UP);
+        module.exports.test_bit_rate_2 = async function(page, set) {
+		const input4 = await page.$('body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(6) > div > div');
                         const inpot4 = await input4.$eval('.form-control' , node => node.value);
-                        if(inpot4 == 0.477)
+                        if(inpot4 == 0.5)
                         {
                             console.log("Bit Rate Value is          TRUE");
                         }
@@ -106,12 +101,12 @@
 	}
 	
 	
-	 module.exports.test_codding_quality = async function(page, set)
+	 module.exports.test_codding_quality_2 = async function(page, set)
         {
             
-           const input3 = await page.$(CODDING_QUAL_UP);
+           const input3 = await page.$('body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(3) > div > div');
                         const inpot3 = await input3.$eval('.form-control' , node => node.selectedIndex);
-                        if(inpot3 == 3)
+                        if(inpot3 == 2)
                         {
                             console.log("Encoding Quality Value is  TRUE");
                         }
@@ -124,5 +119,3 @@
         }
 	
 }());
-
-

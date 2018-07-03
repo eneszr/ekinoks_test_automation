@@ -1,7 +1,7 @@
   (function() {
 
-        const APPLICATION_SELECTOR_UP = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > div > div:nth-child(1) > div > div';
-	const FIRMWARE_SELECTOR_UP= 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > div > div:nth-child(10) > div > div';
+        const APPLICATION_SELECTOR_UP = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(1) > div > div';
+	const FIRMWARE_SELECTOR_UP= 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(10) > div > div';
 	        
         module.exports.test_application = async function(page) 
         {
