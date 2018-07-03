@@ -6,7 +6,21 @@
         const IR_APPLY = '#irRow > td:nth-child(2) > p > button';
         const IR_SELECTOR_UP = '#irRow > td:nth-child(1)';
         const IR_TAB_SELECTOR = '#t01 > tbody > tr:nth-child(7)';
-                
+        const FOCUS_PLUS_SELECTOR = '#focus_plus';
+        const FOCUS_MINUS_SELECTOR  = '#focus_minus';
+        const ONE_SHOT_FOCUS_SELECTOR = '#one_push_af';
+        module.exports.focus_plus = async function(page)
+        {
+            await page.click(FOCUS_PLUS_SELECTOR,{delay:1000});
+        }
+        module.exports.focus_minus = async function(page)
+        {
+            await page.click(FOCUS_MINUS_SELECTOR,{delay:1000});
+        }
+        module.exports.focus_one_shot = async function(page)
+        {
+            await page.click(ONE_SHOT_FOCUS_SELECTOR);
+        }
 	module.exports.set_ir_filter_mode = async function(page, set) 
         {
             await page.click(IR_TAB_SELECTOR);

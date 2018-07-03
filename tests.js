@@ -344,7 +344,7 @@ async function test_set_res_fps_DOM(page,i,res)
                 case "44":{
                       console.log("Lütfen aşağıdaki testi uygulayın.. Ardından otomatik test yazılımını tekrardan başlatın ve test sonuçlarını otomatik test yazılımına bildirmek için bu testin numarasını tuşlayın");
                       console.log("Kameranın gücü kesilir ve bir süre beklendikten sonra tekrar verilir.  Kameranın canlı görüntüsü izlenmeye başladıktan bir süre sonra yine kameranın gücü kesilir bir süre beklenir. Ardından kameranın gücü tekrar verilir. Bu işlem aynı şekilde 1 kez daha tekrarlanır. Toplamda 3 sefer bu işlem yapıldıktan sonra kameranın canlı görüntüsü VLC üzerinden izlenir ve web arayüzüne giriş yapılır. Web arayüzüne giriş yapılabildiği, görüntü çekilebildiği ve görüntüde maskelerin olması gereken yerlede görüldüğü test edilerek doğrulanır.");
-                      select1 = await question.ask("Web arayüzüne giriş yapılabildi mi? Görrüntü çekilebildi mi? Görüntüde maskeler olması gereken yerlede mi? e/h");
+                      select1 = await question.ask("İstenen işlemler sorunsuz bir şekilde yapılabildi mi? e/h");
                       if (select1=="e"||select1=="E")
                           console.log("Test Başarılı");
                       else
@@ -365,6 +365,67 @@ async function test_set_res_fps_DOM(page,i,res)
                       await nav.toTime(page,ip);
                       await time.test_ntp_server1(page, "pool.ntp.org");
                     break;
+                }
+                case "47":{
+                      console.log("Lütfen aşağıdaki testi uygulayın.. Ardından otomatik test yazılımını tekrardan başlatın ve test sonuçlarını otomatik test yazılımına bildirmek için bu testin numarasını tuşlayın");
+                      console.log("Test bilgisayarından kameranın 1.stream adresi kullanılarak(rtsp://<KameraIPAdresi>/stream1) VLC üzerinden 5 adet unicast görüntü oynatılır. 5 adet unicast görüntü çekilirken görüntüde herhangi bir takılma, mozaiklenme, bozulma olmadığı gözlemlenerek kameradan istenilen çözünürlük ve fps değerinde en az 5 adet unicast yayın akışı başlatılabildiği doğrulanır.");
+                      select1 = await question.ask("İstenen işlemler sorunsuz bir şekilde yapılabildi mi ? e/h");
+                      if (select1=="e"||select1=="E")
+                          console.log("Test Başarılı");
+                      else
+                          console.log("Test Başarısız");
+                    
+                }
+                case "48":{
+                      console.log("Lütfen aşağıdaki testi uygulayın.. Ardından otomatik test yazılımını tekrardan başlatın ve test sonuçlarını otomatik test yazılımına bildirmek için bu testin numarasını tuşlayın");
+                      console.log("DEFNE yazılımı üzerinden test yapılan kameranın canlı görüntüsü açılır. Görüntünün oynadığı pencerede herhangi bir noktaya tıklanır ve Yakınlaştırma(Zoom) Tipi değeri Optik Yakınlaştırma olarak seçilir. Bu işlemden sonra mouse yardımı ile zoom in yapılır. Kameranın 3x zoom yapabildiği üst yazı ile gözlemlenerek doğrulanr.");
+                      select1 = await question.ask("İstenen işlemler sorunsuz bir şekilde yapılabildi mi ? e/h");
+                      if (select1=="e"||select1=="E")
+                          console.log("Test Başarılı");
+                      else
+                          console.log("Test Başarısız");
+                }
+                case "49":{
+                      console.log("Lütfen aşağıdaki testi uygulayın.. Ardından otomatik test yazılımını tekrardan başlatın ve test sonuçlarını otomatik test yazılımına bildirmek için bu testin numarasını tuşlayın");
+                      console.log("Kamera web arayüzü üzerinden yeniden başlatılır. Kamera arayüzüne erişim sağlandıktan sonra bu işlem aynı şekilde toplamda 3 sefer tekrarlanır. Daha sonra kameranın canlı görüntüsü VLC üzerinden izlenir ve web arayüzüne giriş yapılır. Bu işlemlerin  sonucunda istenilen işlemlerin sorunsuz bir şekilde yapıldığı gözlemlenerek doğrulanır.");
+                      select1 = await question.ask("İstenen işlemler sorunsuz bir şekilde yapılabildi mi ? e/h");
+                      if (select1=="e"||select1=="E")
+                          console.log("Test Başarılı");
+                      else
+                          console.log("Test Başarısız");
+                }
+                case "50":{
+                      await nav.toCamera(page);
+                      var command = 'vlc rtsp://'+ip+'/stream2';
+                      proc =await require('child_process').exec(command);
+                      await camera.focus_plus(page);
+                      select1 = await question.ask("Kameranın focus ayarında bir değişiklik var mı ? e/h");
+                      if (select1=="e"||select1=="E")
+                          console.log("Test Başarılı");
+                      else
+                          console.log("Test Başarısız");
+                }
+                case "51":{
+                      await nav.toCamera(page);
+                      var command = 'vlc rtsp://'+ip+'/stream2';
+                      proc =await require('child_process').exec(command);
+                      await camera.focus_minus(page);
+                      select1 = await question.ask("Kameranın focus ayarında bir değişiklik var mı ? e/h");
+                      if (select1=="e"||select1=="E")
+                          console.log("Test Başarılı");
+                      else
+                          console.log("Test Başarısız");
+                }
+                case "52":{
+                      await nav.toCamera(page);
+                      var command = 'vlc rtsp://'+ip+'/stream2';
+                      proc =await require('child_process').exec(command);
+                      await camera.focus_one_shot(page);
+                      select1 = await question.ask("Kameranın focus ayarı düzeldi mi ? e/h");
+                      if (select1=="e"||select1=="E")
+                          console.log("Test Başarılı");
+                      else
+                          console.log("Test Başarısız");
                 }
                 case "53": {await test_set_res_fps(page,0,1);
                     await test_ffmpeg_res_fps("stream1",53);
