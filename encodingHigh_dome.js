@@ -80,11 +80,17 @@
                 await page.keyboard.type(set);
 		
 	}
+	module.exports.set_calc_met = async function(page, set) {
+            await page.click(CALC_METHOD);
+            await page.keyboard.type(set);
+            await page.keyboard.type('Enter');
+		
+	}
 
 	
 	module.exports.apply = async function(page){
             await page.click(APPLY_BUTTON_SELECTOR);
-            await page.waitFor(2000);
+            await page.waitForSelector(POPUP_BUTTON_SELECTOR,'visible');
             await page.click(POPUP_BUTTON_SELECTOR);
             await page.waitFor(1000);
   

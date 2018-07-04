@@ -7,7 +7,7 @@ const child_process = require("child_process");
         {
             try {
             console.log(ip);
-            var command = "ffmpeg -y -i rtsp://"+ip+"/"+stream+" -acodec copy -t 00:00:05 -vcodec copy "+test_num+".mp4";
+            var command = "ffmpeg -y -i rtsp://admin:admin@"+ip+"/"+stream+" -acodec copy -t 00:00:05 -vcodec copy "+test_num+".mp4";
             child_process.execSync(command);
             } catch(err){console.log("Bağlantı Hatası"); return 0; }
                 

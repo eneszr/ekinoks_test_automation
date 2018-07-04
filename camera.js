@@ -10,7 +10,7 @@
         const FOCUS_MINUS_SELECTOR  = '#focus_minus';
         const ONE_SHOT_FOCUS_SELECTOR = '#one_push_af';
         module.exports.focus_plus = async function(page)
-        {
+        { 
             await page.click(FOCUS_PLUS_SELECTOR,{delay:4000});
         }
         module.exports.focus_minus = async function(page)

@@ -21,7 +21,6 @@ var version_dome = require("./version_dome");
 var encodingH = require("./encodingHigh_dome");
 var timeSet = require("./time_settings_dome");
 var encodingLow_dome= require("./encodingLow_dome");
-var resolution_dome = require("./resolation_dome");
 /////////////////////////////////////
 
 
@@ -32,7 +31,7 @@ async function test_ffmpeg_res(width_test,height_test,stream,test_num)
     coded_width = await capture_test.read_specs("coded_width",test_num);
     coded_height = await capture_test.read_specs("coded_height",test_num);
     avg_frame_rate = await capture_test.read_specs("avg_frame_rate",test_num);//ölçülen kare hızı
-    var command = 'vlc rtsp://'+ip+'/stream1';
+    var command = 'vlc rtsp://admin:admin@'+ip+'/stream1';
  proc =await require('child_process').exec(command);
 select = await question.ask("Görüntü Geldi mi ? e/h");
     console.log("İstenen çözünürlük = "+width_test+"x"+height_test);
@@ -123,6 +122,7 @@ async function test_set_res_fps_DOM(page,i,res)
             console.log("DOM CAM Testing Done " + (i+65));
         
     }
+    
     
 }
  (function() {
@@ -537,17 +537,40 @@ async function test_set_res_fps_DOM(page,i,res)
                 
 	}
 	
+	////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////DOKUMAN_2__TESTLERİ////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////
+
 	module.exports.start_2 = async function(page, test_number,url) {
             ip = url;
             switch(test_number){
+                case "14" : { 
+                    try{ await test_ffmpeg_res("1920","1080","stream1m","14"); }catch (err){ console.log("HATA");} break;}
+                case "15" : {await test_ffmpeg_res("640","368","stream2m","14"); break;}
+                case "16" : {results = await test_ffmpeg_res("1920","1080","stream1","14"); break;}
+                case "17" : {await test_ffmpeg_res("640","368","stream2","14"); break;}
+                case "23": {//TEST23
+                        console.log(" ");
+                        console.log("Control Doc2-23 STARTED");
+                        await nav_dome.toDomeCamera(page,ip);
+                        await cam.check_turn_to_task(page,"0");
+                        await cam.set_goto_home(page,"100")
+                        await cam.goto_home_apply(page);
+                        console.log("OPTIONS SETTED ");   
+                    break;
+                    
+                }
+                
                 case "27": {//TEST27
                         console.log(" ");
                         console.log("Control Doc2-27 STARTED");
-                        await nav.toDomeEncodingHigh(page,ip);
+                        await nav_dome.toDomeEncodingHigh(page,ip);
                         await encodingH.set_intraframe(page, "15");
                         await encodingH.set_bit_con(page, "cbr");
                         await encodingH.set_codding_quality(page, "Yüksek");
-                        await encodingH.set_bit_rate(page, "1");
+                        await encodingH.set_calc_met(page, "Tanımlı");
                         await encodingH.apply(page);
                         console.log("OPTIONS SETTED ");   
                     break;
@@ -556,12 +579,12 @@ async function test_set_res_fps_DOM(page,i,res)
                 case "28": {//TEST28
                         console.log(" ");
                         console.log("Control Doc2-28 STARTED");
-                        await nav.toDomeEncodingLow(page,ip);
-                        await encodingLow.set_intraframe(page, "15");
-                        await encodingLow.set_bit_con(page, "cbr");
-                        await encodingLow.set_codding_quality(page, "Yüksek");
-                        await encodingLow.set_bit_rate(page, "1");
-                        await encodingLow.apply(page);
+                        await nav_dome.toDomeEncodingLow(page,ip);
+                        await encodingLow_dome.set_intraframe(page, "15");
+                        await encodingLow_dome.set_bit_con(page, "cbr");
+                        await encodingLow_dome.set_codding_quality(page, "Yüksek");
+                        await encodingLow_dome.set_bit_rate(page, "1");
+                        await encodingLow_dome.apply(page);
                         console.log("OPTIONS SETTED ");
                     break;
                     
@@ -569,7 +592,8 @@ async function test_set_res_fps_DOM(page,i,res)
                /* case "29": {//TEST29
                         console.log(" ");
                         console.log("Control Doc2-29 STARTED");
-                        await nav_dome.toResolution(page);
+                        await nav_dome.toResolution(page,ip);
+                        await resolution_dome.set_stream_mode(page,"sadece yayın1");
                         await resolution_dome.set_resolution1(page,"1280 x 720 (max:30fps");
                         await resolution_dome.set_fps1(page,"10");
                         await resolution_dome.apply(page);
@@ -577,10 +601,20 @@ async function test_set_res_fps_DOM(page,i,res)
                     break;
                     
                 }*///statik kamera için
+                case "30": {
+                        console.log("Test Doc2-33 STARTED");
+                        await nav_dome.toDomeCamera(page,ip);
+                        await cam.set_ir_filter_mode(page,"gece");
+                        await cam.set_ir_filter_transition(page,"manuel");
+                        await cam.set_ir_filter_treshold(page,"manuel");
+                        await cam.ir_filter_apply(page);
+                        console.log("OPTIONS SETTED ");
+                        break;
+                }
                 case "33": {//TEST33
                         console.log(" ");
                         console.log("Test Doc2-33 STARTED");
-                        await nav.toDomeEncodingHigh(page,ip);
+                        await nav_dome.toDomeEncodingHigh(page,ip);
                         await encodingH.test_intraframe_2(page);
                         await encodingH.test_bit_con_2(page);
                         await encodingH.test_codding_quality_2(page);
@@ -592,18 +626,18 @@ async function test_set_res_fps_DOM(page,i,res)
                 case "34": {//TEST34
                         console.log(" ");
                         console.log("Test Doc2-34 STARTED");
-                        await nav.toDomeEncodingLow(page,ip);
-                        await encodingLow.test_intraframe_2(page);
-                        await encodingLow.test_bit_con_2(page);
-                        await encodingLow.test_bit_rate_2(page);
-                        await encodingLow.test_codding_quality_2(page);
+                        await nav_dome.toDomeEncodingLow(page,ip);
+                        await encodingLow_dome.test_intraframe_2(page);
+                        await encodingLow_dome.test_bit_con_2(page);
+                        await encodingLow_dome.test_bit_rate_2(page);
+                        await encodingLow_dome.test_codding_quality_2(page);
                     break;
                     
                 }
                /* case "35": {//TEST35
                         console.log(" ");  
                         console.log("Test Doc2-35 STARTED");
-                        await nav_dome.toResolution(page);
+                        await nav_dome.toResolution(page,ip);
                         await resolution_dome.test_profile_2(page);
                         await resolution_dome.test_stream_mode_2(page);  
                         await resolution_dome.test_resolution1_2(page);
@@ -613,10 +647,64 @@ async function test_set_res_fps_DOM(page,i,res)
                     break;
                     
                 } *////statik kamera için  
+                case "36": { //TEST 36
+                      console.log("Test 36 Başladı");
+                      console.log("Vlc programı açıldıktan sonra 15 dakika görüntüyü izleyin ve görüntüde herhangi bir bozulma varmı kontrol edin. Sonrasında Vlc programını kapatın ve sonucu konsola yazın");
+                      var command = 'vlc rtsp://admin:admin@'+ip+'/stream1m';
+                      proc =await require('child_process').exec(command);
+                      select1 = await question.ask("Görüntüde istenmeyen bozukluklar var mı? e/h");
+                      select2 = await question.ask("Görüntü istenen çözünürlükte mi ? e/h");
+                      if ( (select1 == "h" || select1 == "H") && (select2 =="e"|| select2=="E"))
+                          console.log("Test Başarılı");
+                      else
+                          console.log("Test Başarısız")
+                    
+                }
+                case "37": { //TEST 37
+                      var command = 'vlc rtsp://admin:admin@'+ip+'/stream2m';
+                      proc =await require('child_process').exec(command);
+                      select1 = await question.ask("Görüntü Geldi mi ? e/h");
+                      select2 = await question.ask("Görüntü istenen çözünürlükte mi ? e/h");
+                      if ( (select1 == "e" || select1 == "E") && (select2 =="e"|| select2=="E"))
+                          console.log("Test Başarılı");
+                      else
+                          console.log("Test Başarısız")
+                      break;
+                }
+                case "38": { //TEST 38
+                      var command = 'vlc rtsp://admin:admin@'+ip+'/stream1';
+                      proc =await require('child_process').exec(command);
+                      select1 = await question.ask("Görüntü Geldi mi ? e/h");
+                      select2 = await question.ask("Görüntü istenen çözünürlükte mi ? e/h");
+                      if ( (select1 == "e" || select1 == "E") && (select2 =="e"|| select2=="E"))
+                          console.log("Test Başarılı");
+                      else
+                          console.log("Test Başarısız")
+                      break;
+                }
+                case "39": { //TEST 39
+                      var command = 'vlc rtsp://admin:admin@'+ip+'/stream2';
+                      proc =await require('child_process').exec(command);
+                      select1 = await question.ask("Görüntü Geldi mi ? e/h");
+                      select2 = await question.ask("Görüntü istenen çözünürlükte mi ? e/h");
+                      if ( (select1 == "e" || select1 == "E") && (select2 =="e"|| select2=="E"))
+                          console.log("Test Başarılı");
+                      else
+                          console.log("Test Başarısız")
+                      break;
+                }
+                case "42": {//TEST 42
+                      console.log(" ");  
+                      console.log("Test 42 Started");
+                      await nav.toVersion(page,ip);
+                      await version.test_application(page);
+                      await version.test_firmware(page);
+                    break;
+                }
                 case "43": { //TEST-43
                         console.log("");
                         console.log("Test Doc2-43 Started");
-                        await nav_dome.toDomeCamera(page);
+                        await nav_dome.toDomeCamera(page,ip);
                         await page.waitFor(2000);
                         await cam.turn_to_task_value(page);
                         console.log("Test is completed!");
@@ -626,17 +714,32 @@ async function test_set_res_fps_DOM(page,i,res)
                 case "44": {//TEST-44
                         console.log("");
                         console.log("Test Doc2-44 Started");
-                        await nav_dome.toDomeCamera(page);
+                        await nav_dome.toDomeCamera(page,ip);
                         await page.waitFor(2000);
                         await cam.turn_to_task_control(page);
                         console.log("Test is completed!");
                     break;
                     
-                }    
+                }   
+                case "45": {
+                        console.log("Test Doc2-45 Started");
+                        await nav_dome.toDomeCamera(page,ip);
+                        await cam.test_patrol_preset(page);
+                        console.log("Test is completed!");
+                        break;
+
+                }
+                case "46": {
+                        console.log("Test Doc2-46 Started");
+                        await nav_dome.toDomeCamera(page,ip);
+                        await cam.test_patrol_time_range(page);
+                        console.log("Test is completed!");
+                        break;
+                }
                 case "47": {//TEST-47
                         console.log("");
                         console.log("Test Doc2-47 Started");
-                        await nav_dome.toDomeCamera(page);
+                        await nav_dome.toDomeCamera(page,ip);
                         await page.waitFor(2000);
                         for (let i = 0; i < 9; i++){
                         await cam.set_patrol_id(page,i+".");
@@ -649,7 +752,7 @@ async function test_set_res_fps_DOM(page,i,res)
                 case "56": {//TEST-56
                         console.log("");
                         console.log("Test Doc2-56 Started");
-                        await nav_dome.toTimeSettings(page);
+                        await nav_dome.toTimeSettings(page,ip);
                         await page.waitFor(2000);
                         await timeSet.test_np1_value(page);
                         await timeSet.apply(page);
@@ -660,23 +763,29 @@ async function test_set_res_fps_DOM(page,i,res)
                 case "58": {//TEST-58
                         console.log("");
                         console.log("Test Doc2-58 Started");
-                        await nav_dome.toDomeCamera(page);
+                        await nav_dome.toDomeCamera(page,ip);
                         await page.waitFor(2000);
                         await cam.ir_cut_open(page);
                         await cam.lighting_level(page,"manuel");
                         console.log("Please bring the camera to a position where you can see it");
-        
+                        var results = [];
                         var level = ["level0","level1","level2","level3","level4","level5","level6","AUTO"];
                         for (let i = 0; i < 8; i++){
                         await cam.lighting_level(page,level[i]);
                         await page.waitFor(3000);
+                        select1 = await question.ask("IR led yanıyor mu ? e/h");
+                            if (select1=="e"||select1=="E")
+                                results[i] = 1;
+                            else
+                                results[i] = 0;
+                      
                         }
                         console.log("Test is completed!");
                     break;
                     
                 }
-                
                 case "61": {await test_set_res_fps_DOM(page,0,1);
+                    await test_ffmpeg_res_fps('stream1',61);
                     break;
                 }
                 case "62": {await test_set_res_fps_DOM(page,1,1);
@@ -703,7 +812,7 @@ async function test_set_res_fps_DOM(page,i,res)
                 case "137": {//TEST-137
                         console.log("");
                         console.log("Test Doc2-137 Started");
-                        await nav_dome.toDomeCamera(page);
+                        await nav_dome.toDomeCamera(page,ip);
                         await page.waitFor(2000);
                         await cam.turn_left(page);
                         await page.waitFor(4000);
@@ -715,7 +824,7 @@ async function test_set_res_fps_DOM(page,i,res)
                 case "138": {//TEST-138
                         console.log("");
                         console.log("Test Doc2-138 Started");
-                        await nav_dome.toDomeCamera(page);
+                        await nav_dome.toDomeCamera(page,ip);
                         await page.waitFor(2000);
                         await cam.turn_left(page);
                         await page.waitFor(4000);
@@ -727,7 +836,7 @@ async function test_set_res_fps_DOM(page,i,res)
                 case "139": {//TEST-139
                         console.log("");
                         console.log("Test Doc2-139 Started");
-                        await nav_dome.toDomeCamera(page);
+                        await nav_dome.toDomeCamera(page,ip);
                         await page.waitFor(2000);
                         await cam.turn_right(page);
                         await page.waitFor(4000);
@@ -739,7 +848,7 @@ async function test_set_res_fps_DOM(page,i,res)
                 case "140": {//TEST-140
                         console.log("");
                         console.log("Test Doc2-140 Started");
-                        await nav_dome.toDomeCamera(page);
+                        await nav_dome.toDomeCamera(page,ip);
                         await page.waitFor(2000);
                         await cam.turn_right(page);
                         await page.waitFor(4000);
@@ -751,22 +860,22 @@ async function test_set_res_fps_DOM(page,i,res)
                 case "143": {//TEST-143
                         console.log("");
                         console.log("Test Doc2-143 Started");
-                        await nav_dome.toDomeCamera(page);
+                        await nav_dome.toDomeCamera(page,ip);
                         await page.waitFor(2000);
                         await cam.turn_right(page);
-                        await nav_dome.toWatchCamera(page);
+                        await nav_dome.toWatchCamera(page,ip);
                         await page.waitFor(6000);
-                        await nav_dome.toDomeVersion(page);
+                        await nav_dome.toDomeVersion(page,ip);
                         await version_dome.reload(page);
                         await page.waitFor(2000);
-                        await nav_dome.toWatchCamera(page);    
+                        await nav_dome.toWatchCamera(page,ip);    
                         console.log("Test is completed!");
                     break;
                     
                 }
                 case "191": {//TEST-191
                         console.log("");
-                        await nav_dome.toDomeEncodingHigh(page);
+                        await nav_dome.toDomeEncodingHigh(page,ip);
                         await page.waitFor(2000);
                         await encodingH.traffic_forming(page);
                         console.log("Test Doc2-191 Started");
@@ -778,9 +887,9 @@ async function test_set_res_fps_DOM(page,i,res)
                     break;
                     
                 }
-                case "192": {//TEST-193
+                case "193": {//TEST-193
                         console.log("");
-                        await nav_dome.toDomeEncodingHigh(page);
+                        await nav_dome.toDomeEncodingHigh(page,ip);
                         await page.waitFor(2000);
                         await encodingH.traffic_forming(page);
                         console.log("Test Doc2-193 Started");
@@ -792,9 +901,9 @@ async function test_set_res_fps_DOM(page,i,res)
                     break;
                     
                 }
-                case "193": {//TEST-195
+                case "195": {//TEST-195
                         console.log("");
-                        await nav_dome.toDomeEncodingHigh(page);
+                        await nav_dome.toDomeEncodingHigh(page,ip);
                         await page.waitFor(2000);
                         await encodingH.traffic_forming(page);
                         console.log("Test Doc2-195 Started");

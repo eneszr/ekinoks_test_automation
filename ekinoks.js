@@ -62,8 +62,10 @@ let testIt = async () => {
 
  
   
-   ip = '10.5.177.52'//await question.ask("Test edilecek kameranın ip adresini girin");
+   ip = '10.5.176.249'//await question.ask("Test edilecek kameranın ip adresini girin");
    url = 'http://'+ ip + ':8080';
+   dom_url = 'http://10.5.177.164:8080';
+   dom_ip = '10.5.177.164';
    select_cam_type = await question.ask("Kamera tipini seçin Sabit Kamera => 1 DOM => 2");
 	
    if(select_cam_type == 1)
@@ -76,7 +78,7 @@ let testIt = async () => {
         {
          browser = await puppeteer.launch({headless: false});
 	 page = await browser.newPage();
-        await login_dome.loginCamera(page, url);
+        await login_dome.loginCamera(page, dom_url);
         }
     else
         {
@@ -98,7 +100,7 @@ let testIt = async () => {
         else {console.log("Hatalı Tuşladınız Çıkmak İçin C ye basabilirsiniz. Test seçme aşamasına geçildi..");
         await interface(page);}
   */
-  await tests.start_1(page,"52",ip);
+  await tests.start_2(page,"45",dom_ip);
   
         await page.waitFor(30000);
 	await page.close();
