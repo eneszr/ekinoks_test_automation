@@ -14,6 +14,7 @@ var capture_test = require('./capture_test');
 const fs = require('fs');
 const path = require('path');
 var tests = require('./tests');
+var mask = require('./mask');
 var page;
 var browser;
 ////

@@ -3,7 +3,8 @@
         const SELECTOR_input = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(1) > div > div > input';
         const SELECTOR_camera = '#t01 > tbody > tr:nth-child(2) > td:nth-child(2) > button';
         const SELECTOR_child2_select = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(2) > div > div > select';
-    
+        const SELECTOR_ID='body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(2) > div > div > select';
+        const SELECTOR_alarm='body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(2) > div > div > select';
         module.exports.toDomeCamera = async function(page,ip) {
                 URL = ip;	
                 await page.goto('http://'+URL+':8080/#/tabs/ptz_next.json');
@@ -42,6 +43,16 @@
 		URL = ip;
                 await page.goto('http://'+URL+':8080/#/tabs/resolution.json');
                 await page.waitForSelector(SELECTOR_select,'visible');
+	}
+	module.exports.toRTSP = async function(page,ip) {
+		URL = ip;
+                await page.goto('http://'+URL+':8080/#/tabs/rtsp_manag.json');
+                await page.waitForSelector(SELECTOR_ID,'visible');
+	}
+	module.exports.toDomeAlarm = async function(page,ip) {
+		URL = ip;
+                await page.goto('http://'+URL+':8080/#/tabs/alarm.json');
+                await page.waitForSelector(SELECTOR_alarm,'visible');
 	}
 	
 }());

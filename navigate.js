@@ -16,7 +16,9 @@ URL = ip;
             URL = ip;
 
 		await page.goto('http://'+URL+':8080/#/tabs/live_view.json');
-                await page.waitForSelector(SELECTOR_select,'visible');
+                await page.waitForSelector(SELECTOR_input,'visible');        
+                await page.waitFor(2000);
+
 	}
 	module.exports.toEncodingLow = async function(page,ip) {
                 URL = ip;
@@ -40,7 +42,6 @@ URL = ip;
                 URL = ip;
                 await page.goto('http://'+URL+':8080/#/tabs/ptz_next.json');
                 await page.waitForSelector(SELECTOR_camera,'visible');
-                console.log("navigate complated");
 	}
 	module.exports.toAlarm = async function(page,ip) {
                 URL = ip;

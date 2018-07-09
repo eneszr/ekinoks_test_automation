@@ -2,6 +2,16 @@ const fs = require('fs');
 const child_process = require("child_process");
 
 (function() {
+    module.exports.watch_rtsp =function(url,stream,set){
+        var command= "vlc rtsp://"+url+"/"+stream+" --run-time 15 vlc://quit";
+        if(set==1){
+        console.log("RTSP doğrulaması için User Name:admin ve Password:admin girip OK butonuna basınız.. ");
+        console.log("");}
+        child_process.execSync(command);
+        console.log("");
+        console.log("GÖRÜNTÜ AÇILDI");
+        
+    }
        
     module.exports.record =  function(ip,stream,test_num)
         {
