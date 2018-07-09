@@ -76,7 +76,7 @@ let testIt = async () => {
         }
     else if(select_cam_type == 2)
         {
-         browser = await puppeteer.launch({headless: false});
+         browser = await puppeteer.launch({headless: false, args: ['--start-fullscreen']});
 	 page = await browser.newPage();
         await login_dome.loginCamera(page, dom_url);
         }
@@ -100,7 +100,7 @@ let testIt = async () => {
         else {console.log("Hatalı Tuşladınız Çıkmak İçin C ye basabilirsiniz. Test seçme aşamasına geçildi..");
         await interface(page);}
   */
-  await tests.start_2(page,"45",dom_ip);
+  await tests.start_2(page,"125",dom_ip);
   
         await page.waitFor(30000);
 	await page.close();

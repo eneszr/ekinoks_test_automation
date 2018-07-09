@@ -14,7 +14,7 @@
     const IR_FILTER_THRESHOLD = '#ir_led_state';
     const IR_FILTER_TRANSITION = '#auto_ircf_stat';
     const NEW_SELECT = '#t01 > tbody > tr:nth-child(4) > td > table > tbody > tr > td:nth-child(2)';
-    
+    const IR_SELECTOR_UP = '#irRow > td:nth-child(1)';
   
     
         module.exports.set_ir_filter_mode = async function(page, set) 
@@ -171,5 +171,58 @@
                 console.log("Okunan değer = "+inpot+"  Test Başarılı.");
             else  console.log("Okunan değer = "+inpot+"  Test Başarısız.");
         }
-
+        
+        module.exports.test_ir_filter_mode = async function(page, set) 
+        {
+            await page.waitFor(2000);
+            await page.click(IR_TAB_SELECTOR);
+            await page.waitFor(1000);
+            await page.waitForSelector(IR_SELECTOR_UP,'visible');
+            await page.waitForSelector('#ircf_stat','visible');
+            await page.waitFor(1000);
+            const input = await page.$(IR_SELECTOR_UP);
+            const inpot = await input.$eval('#ircf_stat' , node => node.selectedIndex);
+            if(inpot == set)
+              {
+                console.log("IR Filter Mode Value is        TRUE");
+              }
+            else
+              {
+                 console.log("IR Filter Mode Value is        FALSE");
+              }
+             
+            
+	}
+	module.exports.test_ir_filter_transition = async function(page, set)
+        {
+            await page.waitForSelector(IR_SELECTOR_UP,'visible');
+             const input = await page.$(IR_SELECTOR_UP);
+            const inpot = await input.$eval('#auto_ircf_stat' , node => node.selectedIndex);
+            if(inpot == set)
+              {
+                console.log("IR Filter Transition Value is  TRUE");
+              }
+            else
+              {
+                console.log("IR Filter Transition Value is  FALSE");
+              }
+        
+            
+        }
+        module.exports.test_ir_filter_treshold = async function(page, set)
+        {
+            await page.waitForSelector(IR_SELECTOR_UP,'visible');
+             const input = await page.$(IR_SELECTOR_UP);
+            const inpot = await input.$eval('#ir_led_state' , node => node.selectedIndex);
+            if(inpot == set)
+              {
+                console.log("IR Filter Lighting Level is  TRUE");
+              }
+            else
+              {
+                console.log("IR Filter Lighting Level is  FALSE");
+              }
+        
+            
+        }
 }());

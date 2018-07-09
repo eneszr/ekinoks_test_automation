@@ -21,7 +21,12 @@ var version_dome = require("./version_dome");
 var encodingH = require("./encodingHigh_dome");
 var timeSet = require("./time_settings_dome");
 var encodingLow_dome= require("./encodingLow_dome");
+var ppp=require("./PresetPatrolPatern");
 /////////////////////////////////////
+var readline = require('readline');
+var answer;
+var zaman=0;
+var tests = require('./tests');
 
 
 async function test_ffmpeg_res(width_test,height_test,stream,test_num)
@@ -130,6 +135,14 @@ async function test_set_res_fps_DOM(page,i,res)
 	module.exports.start_1 = async function(page, test_number,url) {
 	ip = url;
             switch(test_number.toString()){
+                case "1": {
+                    while(1){
+                    var x = await ppp.push_time(page);
+                    console.log(x);
+                    var xy = await ppp.push_time(page);
+                    console.log(xy[0]+":"+xy[1]+":"+xy[2]+"."+xy[3]);}
+                    break;
+                }
                 case "14" : { 
                     try{ await test_ffmpeg_res("1920","1080","stream1m","14"); }catch (err){ console.log("HATA");} break;}
                 case "15" : {await test_ffmpeg_res("640","368","stream2m","14"); break;}
@@ -749,6 +762,15 @@ async function test_set_res_fps_DOM(page,i,res)
                     break;
                     
                 }
+                case "50":{
+                        console.log("Test Doc2-50 Started");
+                        await nav_dome.toDomeCamera(page,ip);
+                        await cam.test_ir_filter_mode(page,"0");
+                        await cam.test_ir_filter_transition(page,"1");
+                        await cam.test_ir_filter_treshold(page,"8");
+                        console.log("Test is completed!");
+                        break;
+                }
                 case "56": {//TEST-56
                         console.log("");
                         console.log("Test Doc2-56 Started");
@@ -807,6 +829,180 @@ async function test_set_res_fps_DOM(page,i,res)
                     break;
                 }
                 case "68": {await test_set_res_fps_DOM(page,3,2);
+                    break;
+                }
+                case "107":{
+                        await nav_dome.toDomeCamera(page,ip);
+                        await ppp.set_preset(page);
+                        await ppp.set_patrol(page);
+                        await ppp.goto_home(page,1,"70");
+                        await ppp.run_patrol(page);
+                        await page.waitFor(9000);
+                        await ppp.turn_left_right(page,"r");
+                        console.log("Sayaç başlatıldı kamera patrole dönünce enter'a basın");
+                        await ppp.time_pass(page);
+                        await ppp.break_patrol(page);
+                        console.log("Test done.");
+                        
+                        break;
+                }
+                case "111":{
+                    var times = new Array();
+                        await nav_dome.toDomeCamera(page,ip);
+                        await ppp.set_preset(page);
+                        await ppp.set_patrol(page);
+                        await ppp.goto_home(page,1,"70");
+                        await ppp.run_patrol(page);
+                        console.log("Patrol başlatıldı lütfen DEFNE yazılımınızı çalıştırın...");
+                        console.log("Lütfen saha dolabı kapağının açılma durumunu simüle eden kabloyu çıkartarak alarm oluşturunuz...");
+                        console.log("Lütfen alarmı oluşturduğunuzda 'ENTER'a basın");
+                        times[0] = await ppp.push_time(page);
+                        console.log("Lütfen alarm bittiğinde 'ENTER'a basın");
+                        times[1] = await ppp.push_time(page);
+                        console.log("Lütfen patrol tekrar başladığında 'ENTER'a basın");
+                        times[1] = await ppp.push_time(page);
+                        await ppp.break_patrol(page);
+                        select1 = await question.ask("Alarm başlatıldığından kamera Alarm Preset'ine yöneldi mi? e/h");
+                            if (select1=="e"||select1=="E")
+                                results[i] = 1;
+                            else
+                                results[i] = 0;
+                        select1 = await question.ask("Alarm varolduğu süre boyunca DEFNE yazılımında alarm bilgisi mevcutmuydu? e/h");
+                            if (select1=="e"||select1=="E")
+                                results[i] = 1;
+                            else
+                                results[i] = 0;
+                        
+                        
+                }
+                case "114":{
+                        var times = new Array();
+                        await nav_dome.toDomeCamera(page,ip);
+                        await ppp.set_preset(page);
+                        await ppp.set_patrol(page);
+                        await ppp.goto_home(page,1,"70");
+                        await ppp.run_patrol(page);
+                        console.log("Patrol başlatıldı lütfen DEFNE yazılımınızı çalıştırın...");
+                        console.log("Lütfen saha dolabı kapağının açılma durumunu simüle eden kabloyu çıkartarak alarm oluşturunuz...");
+                        for(let i=0;i<5;i++)
+                        {
+                        console.log("Lütfen"+i+"'nci alarmı oluşturduğunuzda 'ENTER'a basın");
+                        times[i,0] = await ppp.push_time(page);
+                        console.log("Lütfen alarm bittiğinde 'ENTER'a basın.. İki işlem arasında en az 10 saniye süre olması gerekmektedir... ");
+                        times[i,1] = await ppp.push_time(page);
+                        }
+                        console.log("Lütfen patrol tekrar başladığında 'ENTER'a basın");
+                        times[1] = await ppp.push_time(page);
+                        await ppp.break_patrol(page);
+                        select1 = await question.ask("Alarm başlatıldığından kamera Alarm Preset'ine yöneldi mi? e/h");
+                            if (select1=="e"||select1=="E")
+                                results[i] = 1;
+                            else
+                                results[i] = 0;
+                        select1 = await question.ask("Alarm varolduğu süre boyunca DEFNE yazılımında alarm bilgisi mevcutmuydu? e/h");
+                            if (select1=="e"||select1=="E")
+                                results[i] = 1;
+                            else
+                                results[i] = 0;
+                        
+                        
+                }
+                case "125" : {
+                    var times = new Array();
+                    await nav_dome.toDomeCamera(page,ip);
+                        await ppp.set_preset(page);
+                        await ppp.set_patrol(page);
+                        await ppp.goto_home(page,1,"70");
+                        await ppp.run_patrol(page);
+                        console.log("Patrol başlatıldı lütfen DEFNE yazılımınızı çalıştırın...");
+                        console.log("Lütfen saha dolabı kapağının açılma durumunu simüle eden kabloyu çıkartarak alarm oluşturunuz...");
+                        console.log("Lütfen alarmı oluşturduğunuzda 'ENTER'a basın");
+                        times[0] = await ppp.push_time(page);
+                        await page.waitFor(7000);
+                        await ppp.go_position(page,"3000","7500","6000");
+                        times[2] = await ppp.get_time(); 
+                        console.log("140sn bekleyin")
+                        for(let i=140;i>0;i--)
+                        {
+                            await page.waitFor(1000);
+                            console.log("Kalan Süre:"+i+"sn   Lütfen Bekleyin");
+                        }
+                        times[3] = await ppp.push_time(page);
+                        select1 = await question.ask("Alarm başlatıldığından kamera Alarm Preset'ine yöneldi mi? e/h");
+                            if (select1=="e"||select1=="E")
+                                results[i] = 1;
+                            else
+                                results[i] = 0;
+                        select2 = await question.ask("140 sn bekledikten sonra kamera patrole devam etti mi? e/h");
+                            if (select1=="e"||select1=="E")
+                                results[i] = 1;
+                            else
+                                results[i] = 0;
+                        break;
+                }
+                case "129" : {
+                    var times = new Array();
+                    await nav_dome.toDomeCamera(page,ip);
+                        await ppp.set_preset(page);
+                        await ppp.set_patrol(page);
+                        await ppp.goto_home(page,0,"70");
+                        await ppp.run_patrol(page);
+                        console.log("Patrol başlatıldı lütfen DEFNE yazılımınızı çalıştırın...");
+                        console.log("Lütfen saha dolabı kapağının açılma durumunu simüle eden kabloyu çıkartarak alarm oluşturunuz...");
+                        console.log("Lütfen alarmı oluşturduğunuzda 'ENTER'a basın");
+                        times[0] = await ppp.push_time(page);
+                        console.log("140sn bekleyin")
+                        for(let i=140;i>0;i--)
+                        {
+                            await page.waitFor(1000);
+                            console.log("Kalan Süre:"+i+"sn   Lütfen Bekleyin");
+                        }
+                        times[2] = await ppp.get_time(page);
+                        select1 = await question.ask("Alarm başlatıldığından kamera Alarm Preset'ine yöneldi mi? e/h");
+                            if (select1=="e"||select1=="E")
+                                results[i] = 1;
+                            else
+                                results[i] = 0;
+                        select2 = await question.ask("140 sn bekledikten sonra kamera patrole devam etti mi? e/h");
+                            if (select1=="e"||select1=="E")
+                                results[i] = 1;
+                            else
+                                results[i] = 0;
+                        break;
+                
+                    }
+                case "132" : {
+                    var times = new Array();
+                    await nav_dome.toDomeCamera(page,ip);
+                        await ppp.set_preset(page);
+                        await ppp.set_patrol(page);
+                        await ppp.goto_home(page,0,"70");
+                        await ppp.run_patrol(page);
+                        console.log("Patrol başlatıldı lütfen DEFNE yazılımınızı çalıştırın...");
+                        console.log("Lütfen saha dolabı kapağının açılma durumunu simüle eden kabloyu çıkartarak alarm oluşturunuz...");
+                        console.log("Lütfen alarmı oluşturduğunuzda 'ENTER'a basın");
+                        times[0] = await ppp.push_time(page);
+                        await page.waitFor(7000);
+                        await ppp.go_position(page,"3000","7500","6000");
+                        times[2] = await ppp.get_time(); 
+                        console.log("140sn bekleyin")
+                        for(let i=140;i>0;i--)
+                        {
+                            await page.waitFor(1000);
+                            console.log("Kalan Süre:"+i+"sn   Lütfen Bekleyin");
+                        }
+                        times[3] = await ppp.push_time(page);
+                        select1 = await question.ask("Alarm başlatıldığından kamera Alarm Preset'ine yöneldi mi? e/h");
+                            if (select1=="e"||select1=="E")
+                                results[0] = 1;
+                            else
+                                results[0] = 0;
+                        select2 = await question.ask("140 sn bekledikten sonra kamera patrole devam etti mi? e/h");
+                            if (select1=="e"||select1=="E")
+                                results[1] = 1;
+                            else
+                                results[2] = 0;
+                    
                     break;
                 }
                 case "137": {//TEST-137
@@ -919,6 +1115,7 @@ async function test_set_res_fps_DOM(page,i,res)
  
                 
             }
+            
 	
         
         

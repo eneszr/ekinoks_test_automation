@@ -8,7 +8,7 @@
                 URL = ip;	
                 await page.goto('http://'+URL+':8080/#/tabs/ptz_next.json');
                 await page.waitForSelector(SELECTOR_camera,'visible');
-                await page.waitFor(500);
+                await page.waitFor(2000);
 	}
 	
 	module.exports.toDomeVersion = async function(page,ip) {
