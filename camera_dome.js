@@ -1,3 +1,4 @@
+var result = require('./result.js');
 (function(){
     const PPP_BUTTON_LEFT='#autoPL';
     const PPP_BUTTON_RIGHT='#autoPR';
@@ -120,9 +121,9 @@
                 await page.click(PPP_PATROL_ID);
                 console.log(set+".Patrol seçildi.");
                 await page.waitFor(2000);
-                const inpot = await page.$eval('button#patrol_run' , node => node.style.visibility);
-                if(inpot=="visible"){console.log(set+".Patrol koş butonu aktif");}
-                else console.log(set+".Patrol koş butonu aktif değil");
+                var inpot = await page.$eval('button#patrol_run' , node => node.style.visibility);
+                if(inpot=="visible"){console.log(set+".Patrol koş butonu aktif"); inpot=1;}
+                else{ console.log(set+".Patrol koş butonu aktif değil"); inpot=0;}
                 await page.waitFor(1000);
                 return inpot;
 	}
@@ -226,16 +227,16 @@
         /////////////GÖREVE DÖN KONTROLLERİ/////////////////
         module.exports.turn_to_task_value = async function(page,set) {
                 await page.waitFor(2000);
-                const input1 = await page.$('#t01 > tbody > tr:nth-child(4) > td > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(2) > td:nth-child(2) > label');
-                const inpot1 = await input1.$eval('input#home_timeout' , node => node.value);
-                if(inpot1 ==set)
+                const input = await page.$('#t01 > tbody > tr:nth-child(4) > td > table > tbody > tr > td:nth-child(1) > table > tbody > tr:nth-child(2) > td:nth-child(2) > label');
+                const inpot = await input.$eval('input#home_timeout' , node => node.value);
+                if(inpot ==set)
                         {
-                            console.log("Göreve dön süresi "+inpot1+"       TRUE");
+                            console.log("Göreve dön süresi "+inpot+"       TRUE");
                             return [set,inpot,1];
                         } 
                 else
                         {
-                            console.log("Göreve dön süresi "+inpot1+"       FALSE");
+                            console.log("Göreve dön süresi "+inpot+"       FALSE");
                             return [set,inpot,0];
                         }
             

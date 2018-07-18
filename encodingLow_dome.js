@@ -57,7 +57,7 @@
         }
         
         
-        //////////////  ENCODİNG LOW TEST FOR Doc2-34 ////////////////
+        //////////////  ENCODING LOW TEST FOR Doc2-34 ////////////////
         
           module.exports.test_intraframe_2 = async function(page) {
                         const input1 = await page.$('body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(1) > div > div');
@@ -65,11 +65,12 @@
                         if(inpot1 == 12)
                         {
                             console.log("Okunan Intraframe değeri "+inpot1+"        TRUE");
+                            return ['12',inpot1,1];
                         }
                         else
                         {
                             console.log("Okunan Intraframe değeri "+inpot1+"        FALSE");
-                            
+                            return ['12',inpot1,0];
                         }
             
 	}
@@ -82,35 +83,40 @@
                         if(inpot2 == 0) text = 'Tanımlanmamış';
                         else if(inpot2 == 1) text = 'CBR'; 
                         else if(inpot2 == 2) text = 'VBR';
+ 
                         if(inpot2 == 2)
                         {
                             console.log("Okunan Bit kontrol metodu "+text+"       TRUE");
+                            return ['VBR',text,1];
                         }
                         else
                         {
                             console.log("Okunan Bit kontrol metodu "+text+"       FALSE");
+                            return ['VBR',text,0];
                             
                         }
             
         }     
       
-        module.exports.test_bit_rate_2 = async function(page, set) {
+         module.exports.test_bit_rate_2 = async function(page, set) {
 		const input4 = await page.$('body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(6) > div > div');
                         const inpot4 = await input4.$eval('.form-control' , node => node.value);
                         if(inpot4 == 0.5)
                         {
                             console.log("Okunan Bit Rate "+inpot4+"          TRUE");
+                            return [0.5,inpot4,1];
                         }
                         else
                         {
                             console.log("Okunan Bit Rate "+inpot4+"        FALSE");
+                            return [0.5,inpot4,0];
                             
                         }
 		
 	}
 	
 	
-	 module.exports.test_codding_quality_2 = async function(page, set)
+	module.exports.test_codding_quality_2 = async function(page, set)
         {
             
            const input3 = await page.$('body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(3) > div > div');
@@ -120,13 +126,16 @@
                         else if(inpot3 == 1) text = 'TEMEL'; 
                         else if(inpot3 == 2) text = 'ORTA';
                         else if(inpot3 == 3) text = 'YÜKSEK';
+
                         if(inpot3 == 2)
                         {
                             console.log("Okunan Kodlayıcı kalitesi "+text+"  TRUE");
+                            return ['ORTA',text,1];
                         }
                         else
                         {
                             console.log("Okunan Kodlayıcı kalitesi "+text+"  FALSE");
+                            return ['ORTA',text,0];
                             
                         }
           

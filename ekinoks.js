@@ -78,7 +78,7 @@ let testIt = async () => {
         {
          browser = await puppeteer.launch({headless: false});
 	 page = await browser.newPage();
-        await login_dome.loginCamera(page, dom_url);
+        await login_dome.loginCamera(page, dom_ip);
         }
     else
         {
@@ -100,7 +100,11 @@ let testIt = async () => {
         else {console.log("Hatalı Tuşladınız Çıkmak İçin C ye basabilirsiniz. Test seçme aşamasına geçildi..");
         await interface(page);}
   */
-  await tests.start_1(page,"23",ip);
+  await tests.start_2(page,"47",dom_ip);
+  //await tests.start_1(page,"24",ip);
+  
+ /* for(let i=47; i<53; i++)
+  await tests.start_2(page,i.toString(),dom_ip);
 
         
   

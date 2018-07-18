@@ -6,10 +6,12 @@ const {ping} = require('./ping.js');
 	
 	module.exports.loginCamera = async function(page, ip) {
             x=0;
-            while(!x)
-                {x = await ping (page,ip);
+            for(let i=0; !x; i++)
+                {
+                    x = await ping (page,ip);
                     await page.waitFor(1000);
-                console.log("Kamera offline Lutfen Bekleyin"+x);
+                    if(!x)
+                console.log("Kamera offline Lutfen Bekleyin  Gecen Süre = "+i+"sn");
                 }
                 camurl = 'http://'+ ip + ':8080';
 		await page.goto(camurl, {"waitUntil": "networkidle2"});
