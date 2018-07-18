@@ -19,8 +19,7 @@ var page;
 var browser;
 ////
 var login_dome = require("./login_dome");
-
-
+var {ping} = require("./ping.js")
  
  
 async function interface (page)
@@ -63,7 +62,7 @@ let testIt = async () => {
 
  
   
-   ip = '10.5.177.50'//await question.ask("Test edilecek kameranın ip adresini girin");
+   ip = '10.5.177.52'//await question.ask("Test edilecek kameranın ip adresini girin");
    url = 'http://'+ ip + ':8080';
    dom_url = 'http://10.5.177.164:8080';
    dom_ip = '10.5.177.164';
@@ -73,7 +72,7 @@ let testIt = async () => {
         {
          browser = await puppeteer.launch({headless: false});
 	 page = await browser.newPage();
-        await login.loginCamera(page, url);
+        await login.loginCamera(page, ip);
         }
     else if(select_cam_type == 2)
         {
@@ -101,7 +100,7 @@ let testIt = async () => {
         else {console.log("Hatalı Tuşladınız Çıkmak İçin C ye basabilirsiniz. Test seçme aşamasına geçildi..");
         await interface(page);}
   */
-  await tests.start_2(page,"141",dom_ip);
+  await tests.start_1(page,"23",ip);
 
         
   
