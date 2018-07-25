@@ -114,18 +114,26 @@ var result = require('./result.js');
             
         }
         //////////TEST-47 İÇİN
-        module.exports.set_patrol_id = async function(page, set) {
-		await page.click(PPP_PATROL_ID);
-                await page.keyboard.type(set);
-                await page.keyboard.type('Enter');
-                await page.click(PPP_PATROL_ID);
-                console.log(set+".Patrol seçildi.");
-                await page.waitFor(2000);
-                var inpot = await page.$eval('button#patrol_run' , node => node.style.visibility);
-                if(inpot=="visible"){console.log(set+".Patrol koş butonu aktif"); inpot=1;}
-                else{ console.log(set+".Patrol koş butonu aktif değil"); inpot=0;}
+       module.exports.set_pattern_id = async function(page, set) {
+                await page.click('#pattern');
+                var value = await page.$eval('#pattern > option:nth-child('+(set+1)+')', node => node.value);//// set+1. option'ın value'su
+                await page.select('#pattern', value); 
+                await page.click('#pattern');
                 await page.waitFor(1000);
-                return inpot;
+                
+                const index = await page.$eval('#pattern', node => node.selectedIndex);
+                await page.waitFor(1000);
+                console.log(index+". pattern seçildi");
+                const inpot1 = await page.$eval('#buttonRun' , node => node.style['visibility']);
+                await page.waitFor(2000);
+                if(inpot1 == 'visible'){
+                    console.log(index+". pattern için koş butonu aktif");
+                    return 1;
+                }
+                else{
+                    console.log(index+". pattern için koş butonu aktif değil");
+                    return 0;
+                }
 	}
 	//////////////GÖREVE DÖN,SERBEST SÜRE TANIMI,CHECKBOX İŞARETİ VE DEĞİŞİKLİKLERİ UYGULAMA//////////////////
     	module.exports.check_turn_to_task= async function(page,set){
@@ -258,10 +266,10 @@ var result = require('./result.js');
             const inpot = await page.$eval('input#self_goto_home' , node => node.checked);
             if(inpot==1)
             {console.log("Göreve dön tiki SEÇİLİ      TRUE");
-                await result.write("44"," BAŞARILI     Göreve dön tiki seçili");}
+                await result.write("44"," BAŞARILI     Göreve dön tiki seçili",2);}
             else 
             {console.log("Göreve dön tiki SEÇİLİ DEĞİL       FALSE");
-                await result.write("44"," BAŞARISIZ    Göreve dön tiki seçili değil");}
+                await result.write("44"," BAŞARISIZ    Göreve dön tiki seçili değil",2);}
         }
         
         ///////////PRESET,PATROL,PATTERN KONTROLLERİ//////////
@@ -277,11 +285,11 @@ var result = require('./result.js');
             }
             if(inpot=="3,7")
             {  console.log("Okunan değer = "+inpot+"  Test Başarılı.");
-               await result.write("45"," BAŞARILI     İstenen değer = 3,7   Gerçekleşen değer = "+inpot);
+               await result.write("45"," BAŞARILI     İstenen değer = 3,7   Gerçekleşen değer = "+inpot,2);
 
             }
                 else{  console.log("Okunan değer = "+inpot+"  Test Başarısız.");
-               await result.write("45"," BAŞARISIZ    İstenen değer = 3,7   Gerçekleşen değer = "+inpot);
+               await result.write("45"," BAŞARISIZ    İstenen değer = 3,7   Gerçekleşen değer = "+inpot,2);
                 }
                     
             }
@@ -297,10 +305,10 @@ var result = require('./result.js');
             }
             if(inpot=="5,10")
             {console.log("Okunan değer = "+inpot+"  Test Başarılı.");
-               await result.write("46"," BAŞARILI     İstenen değer = 5,10   Gerçekleşen değer = "+inpot);}
+               await result.write("46"," BAŞARILI     İstenen değer = 5,10   Gerçekleşen değer = "+inpot,2);}
             else 
             {console.log("Okunan değer = "+inpot+"  Test Başarısız.");
-               await result.write("46"," BAŞARISIZ     İstenen değer = 5,10   Gerçekleşen değer = "+inpot);}
+               await result.write("46"," BAŞARISIZ     İstenen değer = 5,10   Gerçekleşen değer = "+inpot,2);}
         }
         ////////////////////test 50
         
@@ -352,6 +360,45 @@ var result = require('./result.js');
                         }
             
 	}
+	
+	 module.exports.delete_pattern = async function(page,set){
+                await page.click('#pattern');
+                var value = await page.$eval('#pattern > option:nth-child('+(set+1)+')', node => node.value);//// set+1. option'ın value'su
+                await page.select('#pattern', value); 
+                await page.click('#pattern');
+                await page.waitFor(1000);
+                
+                const index = await page.$eval('#pattern', node => node.selectedIndex);
+                await page.waitFor(1000);
+                console.log(index+". pattern seçildi");
+                const inpot1 = await page.$eval('#buttonDelete' , node => node.style['visibility']);
+                await page.waitFor(2000);
+                //console.log(inpot1);
+                if(inpot1 == 'visible'){
+                    await page.click(PPP_PATTERN_DELETE_BUTTON);
+                    console.log(index+". pattern silindi");
+                }
+            
+        }
+        module.exports.add_pattern = async function(page,set,name){
+                await page.click('#patternTag');
+                for (let i = 0; i < 10; i++){await page.keyboard.down('Backspace');await page.keyboard.down('Delete');}
+                await page.keyboard.type(name);
+                await page.click('#pattern');
+                var value = await page.$eval('#pattern > option:nth-child('+(set+1)+')', node => node.value);//// set+1. option'ın value'su
+                await page.select('#pattern', value); 
+                await page.click('#pattern');
+                await page.waitFor(1000);
+                await page.click(PPP_PATTERN_START_BUTTON);
+                await page.click(PTZ_LEFT,{delay:4000});
+                await page.click(PTZ_RIGHT,{delay:8000});
+                await page.click(PTZ_ZOOM,{delay:4000});
+                await page.click('#t01 > tbody > tr:nth-child(6) > td:nth-child(1) > table > tbody > tr > td:nth-child(1) > p:nth-child(3) > button:nth-child(3)',{delay:4000});
+                await page.click(PPP_PATTERN_STOP_BUTTON);  
+                
+                await page.waitFor(2000);
+                console.log((set+1)+". pattern kaydedildi");
+        }
         
 
 }());

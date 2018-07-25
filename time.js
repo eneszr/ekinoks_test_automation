@@ -19,7 +19,7 @@
                             console.log("NTP Server1 IP is FALSE");
                         }
                         
-                        
+                        return inpot;
             
 	}
 	

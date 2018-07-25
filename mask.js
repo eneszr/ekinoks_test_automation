@@ -10,25 +10,31 @@
     const MASK_REFRESH = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(7) > div > div > button';
     const MASK_APPLY = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(9) > div > div > button';
     const POPUP_SELECTOR = 'body > div.bootbox.modal.fade.bootbox-alert.in > div > div > div.modal-footer > button';
+    const MASK_TEST_SELECTOR = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(6) > div > div';
+    
+
 	module.exports.select_mask = async function(page, i) {
-		var maskid = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
+		var maskid = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12","13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"];
+        await page.waitForSelector(MASK_ID_SELECTOR,'visible');
         await page.click(MASK_ID_SELECTOR);
         await page.keyboard.type("Lütfen");
-        await page.waitFor(5000);
+        await page.waitFor(3000);
         await page.keyboard.type(maskid[i]); 
-		await page.waitFor(5000);
+		await page.waitFor(3000);
         await page.keyboard.type('Enter');
 	}
 	module.exports.mask_size = async function(page, width, height){
-		await page.click(MASK_WIDTH_SELECTOR);
+		await page.waitForSelector(MASK_WIDTH_SELECTOR,'visible');
+        await page.click(MASK_WIDTH_SELECTOR);
         for(let i = 0; i<5; i++){ 
             await page.keyboard.press('Backspace');
-            await page.waitFor(250);
+            await page.waitFor(150);
         }
         await page.keyboard.type(width);
         await page.waitFor(500);
 		await page.keyboard.press("Enter");
         await page.waitFor(1000);
+        await page.waitForSelector(MASK_HEIGHT_SELECTOR,'visible');
         await page.click(MASK_HEIGHT_SELECTOR);
         for(let i = 0; i<5; i++){ 
             await page.keyboard.press('Backspace');
@@ -70,6 +76,12 @@
 	module.exports.mask_popup = async function(page)
     {
         await page.click(POPUP_SELECTOR);
+    }
+    module.exports.test_mask_active = async function(page)
+    {
+        const input = await page.$(MASK_TEST_SELECTOR);
+        const inpot = await input.$eval('.ng-pristine' , node => node.checked);
+        return inpot;
     }
 	
 }());

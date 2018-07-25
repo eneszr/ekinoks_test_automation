@@ -260,7 +260,7 @@ var readline = require('readline');
             var wait =1;
             const rl = readline.createInterface({input: process.stdin,output: process.stdout});
             await process.stdin.on("keypress",function(){
-                date = new Date();
+             date = new Date();
              data[0] = date.getHours();
              data[1] = date.getMinutes();
              data[2] = date.getSeconds();
@@ -268,7 +268,6 @@ var readline = require('readline');
              wait= !wait;
 
       });
-            
         while(wait) await page.waitFor(10);
             await rl.close();
         var return_value = data; 
@@ -343,7 +342,7 @@ var readline = require('readline');
              data[2] = date.getSeconds();
              data[3] = date.getMilliseconds(); 
             var return_value = data; 
-             if (set=1) return_value = data[0]+":"+data[1]+":"+data[2];
+             if (set==1) return_value = data[0]+":"+data[1]+":"+data[2];
             return return_value;
     
             

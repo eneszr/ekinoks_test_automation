@@ -35,9 +35,9 @@
             const input = await page.$('body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(8) > div > div');
             const inpot = await input.$eval('.ng-pristine' , node => node.checked);
             if(inpot=='1')
-                console.log("Checkbox checked             TRUE");
+            {  console.log("Checkbox seçili             TRUE"); return [inpot,1];}
             else
-                console.log("Checkbox checked             FALSE");
+            {console.log("Checkbox seçili değil       FALSE"); return [inpot,0];}
         }
         module.exports.active_alarms_control= async function(page,set){
             await page.waitFor(2000);
@@ -45,12 +45,13 @@
             const inpot1 = await input1.$eval('.form-control' , node => node.value);
             if(inpot1 ==set)
                         {
-                            console.log("Active Alarms value is:"+inpot1+"       TRUE");
+                            console.log("Aktif alarmlar:"+inpot1+"       TRUE");
+                            return [inpot1,1];
                         } 
             else
                         {
-                            console.log("Active Alarms value is:"+inpot1+"       FALSE");
-                            
+                            console.log("Aktif alarmlar:"+inpot1+"       FALSE");
+                            return [inpot1,0];
                         }
             
         }

@@ -19,30 +19,39 @@ var page;
 var browser;
 ////
 var login_dome = require("./login_dome");
-
-var select_cam;
+var {ping} = require("./ping.js")
  
  
 async function interface (page)
 {
-        test_number = await question.ask("HANGİ TESTİ YAPMAK İSTİYORSUNUZ?...................Çıkış İçin C ye basabilirsiniz");
+        document = await question.ask("Yapacağınız Test Hangi Dökümanda?            ..Çıkış İçin C ye basabilirsiniz");
+        console.clear();
+        if (document == "c" || document == "C") 
+        {
+            console.log("Çıkış yapılıyor..");  
+            return;
+            
+        }
+        test_number = await question.ask("HANGİ TESTİ YAPMAK İSTİYORSUNUZ?             ..Çıkış İçin C ye basabilirsiniz");
         console.clear();
         if (test_number == "c" || test_number == "C")
         { 
             console.log("Çıkış yapılıyor..");  
             return;
+            
         }
         
-       if (select_cam == 1)
+        if (document == 1)
             await tests.start_1(page,test_number,ip);
         
-        else if(select_cam == 2)
+        else if(document == 2)
             await tests.start_2(page,test_number,ip);
         
         else if (document == "c" || document == "C") 
         { 
             console.log("Çıkış yapılıyor..");  
             return;
+            
         }
         
         else
@@ -50,49 +59,62 @@ async function interface (page)
             await interface(page);
 }    
 let testIt = async () => {
-   ip = await question.ask("Test edilecek kameranın ip adresini girin:  ");
-   
-  
-    select_cam_type = await question.ask("Kamera tipini seçin Sabit Kamera => 1 DOM => 2  ");
-   
-    if(select_cam_type == 1)
-    {
-        browser = await puppeteer.launch({headless: false});
-        page = await browser.newPage();
-        await login.loginCamera(page, ip);
-        select_cam = 1;
-    }
-    else if(select_cam_type == 2)
-    {
-        browser = await puppeteer.launch({headless: false});
-        page = await browser.newPage();
-        await login_dome.loginCamera(page, ip);
-        select_cam = 2;
-    }
-    else
-    {
-        console.log("Hatalı tuşladınız. Lütfen tekrar deneyin..");
-        await testIt();
-    }
 
-    select = await question.ask("Test Yapmak İçin T'ye Çıkış için C ye basınz");
-    console.clear();
-    if (select == "c" || select == "C") 
-    {
-        console.log("Çıkış yapılıyor.."); 
-        await page.waitFor(3000); 
-        browser.close(); 
-        return;
-    }
+
+  
+   ip = '10.5.177.52'//await question.ask("Test edilecek kameranın ip adresini girin");
+   url = 'http://'+ ip + ':8080';
+   dom_url = 'http://10.5.177.164:8080';
+   dom_ip = '10.5.177.164';
+   select_cam_type = await question.ask("Kamera tipini seçin Sabit Kamera => 1 DOM => 2");
+	
+   if(select_cam_type == 1)
+        {
+         browser = await puppeteer.launch({headless: false});
+	 page = await browser.newPage();
+        await login.loginCamera(page, ip);
+        }
+    else if(select_cam_type == 2)
+        {
+         browser = await puppeteer.launch({headless: false});
+	 page = await browser.newPage();
+        await login_dome.loginCamera(page, dom_ip);
+        }
+    else
+        {
+            console.log("Hatalı tuşladınız. Lütfen tekrar deneyin..");
+            await testIt();
+        }
+/*
+ select = await question.ask("Test Yapmak İçin T'ye Çıkış için C ye basınz");
+        console.clear();
+        if (select == "c" || select == "C") 
+        {
+            console.log("Çıkış yapılıyor.."); 
+            await page.waitFor(3000); 
+            browser.close(); 
+            return;
+            
+        }
         else if (select == "t" || select== "T") await interface(page);
-        else {console.log("Hatalı Tuşlama Yaptınız. Çıkmak İçin C Tuşuna Basabilirsiniz. Test Aşamasına Geçildi..");
+        else {console.log("Hatalı Tuşladınız Çıkmak İçin C ye basabilirsiniz. Test seçme aşamasına geçildi..");
         await interface(page);}
- // await tests.start_2(page,"125",ip);
-        return select_cam;
+  */
+  await tests.start_2(page,"34",dom_ip);
+    await tests.start_1(page,"47","10.5.177.52");
+  //await tests.start_1(page,"24",ip);
+  /*
+  for(let i=189; i<199; i++)
+  await tests.start_2(page,i.toString(),dom_ip);
+
+        
+  
+  /*
         await page.waitFor(30000);
-        await page.close();
-        await browser.close();
-       // return 0;
+	await page.close();
+	await browser.close();
+  */
+	return 0;
 }
 
 testIt().then((value) => {

@@ -50,7 +50,7 @@
         }
         module.exports.mask_apply= async function(page) {
             await page.click('body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(9) > div > div > button');
-            await page.waitFor(2000);
+            await page.waitForSelector('body > div.bootbox.modal.fade.bootbox-alert.in > div > div > div.modal-footer > button','visible');
             await page.click('body > div.bootbox.modal.fade.bootbox-alert.in > div > div > div.modal-footer > button');
         }
     
