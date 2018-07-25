@@ -15,7 +15,7 @@
         await page.click(MASK_ID_SELECTOR);
         await page.keyboard.type("Lütfen");
         await page.waitFor(5000);
-        await page.keyboard.type(maskid[i]); console.log("ok " + maskid[i]);
+        await page.keyboard.type(maskid[i]); 
 		await page.waitFor(5000);
         await page.keyboard.type('Enter');
 	}

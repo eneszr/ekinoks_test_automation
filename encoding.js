@@ -68,12 +68,13 @@
                         const inpot1 = await input1.$eval('.form-control' , node => node.value);
                         if(inpot1 == 12)
                         {
-                            console.log("Intraframe Value is        TRUE");
+                            console.log("Intraframe Aralığı Değeri.....DOĞRU");
+                            return 1;
                         }
                         else
                         {
-                            console.log("Intraframe Value is        FALSE");
-                            
+                            console.log("Intraframe Aralığı Değeri.....YANLIŞ");
+                            return 0;
                         }
             
 	}
@@ -84,11 +85,13 @@
                         const inpot2 = await input2.$eval('.form-control' , node => node.selectedIndex);
                         if(inpot2 == 2)
                         {
-                            console.log("Bit Control Value is       TRUE");
+                            console.log("Bitrate Kontrol Metodu.....DOĞRU");
+                            return 1;
                         }
                         else
                         {
-                            console.log("Bit Control Value is       FALSE");
+                            console.log("Bitrate Kontrol Metodu.....YANLIŞ");
+                            return 0;
                             
                         }
             
@@ -101,12 +104,13 @@
                         const inpot3 = await input3.$eval('.form-control' , node => node.selectedIndex);
                         if(inpot3 == 3)
                         {
-                            console.log("Encoding Quality Value is  TRUE");
+                            console.log("Kodlayıcı Kalitesi.....DOĞRU");
+                            return 1;
                         }
                         else
                         {
-                            console.log("Encoding Quality Value is  FALSE");
-                            
+                            console.log("Kodlayıcı Kalitesi.....YANLIŞ");
+                            return 0;
                         }
           
         }
@@ -116,12 +120,13 @@
                         const inpot4 = await input4.$eval('.form-control' , node => node.value);
                         if(inpot4 == 3.338)
                         {
-                            console.log("Bit Rate Value is          TRUE");
+                            console.log("Bitrate Değeri.....DOĞRU");
+                            return 1;
                         }
                         else
                         {
-                            console.log("Bit Rate Value is          FALSE");
-                            
+                            console.log("Bitrate Değeri.....YANLIŞ");
+                            return 0;
                         }
 		
 	}
@@ -130,12 +135,13 @@
                         const inpot5 = await input5.$eval('.form-control' , node => node.selectedIndex);
                         if(inpot5 == 1)
                         {
-                            console.log("Calculation MethodValue is TRUE");
+                            console.log("Bitrate Hesaplama Metodu.....DOĞRU");
+                            return 1;
                         }
                         else
                         {
-                            console.log("Calculation MethodValue is FALSE");
-                            
+                            console.log("Bitrate Hesaplama Metodu.....YANLIŞ");
+                            return 0;
                         }
 		
 	}

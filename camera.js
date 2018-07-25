@@ -70,11 +70,13 @@
             const inpot = await input.$eval('#ircf_stat' , node => node.selectedIndex);
             if(inpot == set)
               {
-                console.log("IR Filter Mode Value is        TRUE");
+                console.log("IR Cut Filter Modu.....DOĞRU");
+                return 1;
               }
             else
               {
-                 console.log("IR Filter Mode Value is        FALSE");
+                 console.log("IR Cut Filter Modu.....YANLIŞ");
+                 return 0;
               }
              
             
@@ -86,11 +88,13 @@
             const inpot = await input.$eval('#auto_ircf_stat' , node => node.selectedIndex);
             if(inpot == set)
               {
-                console.log("IR Filter Transition Value is  TRUE");
+                console.log("IR-Cut Filtre Geçişi.....DOĞRU");
+                return 1;
               }
             else
               {
-                console.log("IR Filter Transition Value is  FALSE");
+                console.log("IR-Cut Filtre Geçişi.....YANLIŞ");
+                return 0;
               }
         
             

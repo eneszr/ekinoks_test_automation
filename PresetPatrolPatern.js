@@ -78,6 +78,150 @@ var readline = require('readline');
 
             }
         }
+        module.exports.set_preset_1= async function(page){
+            var horizontal = ["0"];
+            var vertical = ["0"];
+            console.log("Presetler siliniyor..")
+            
+                await page.waitFor(1000);
+                await page.click(PRESET_INDEX_SELECTOR);
+                await page.waitFor(1500);
+                for (let i = 0; i < 10; i++)
+                await page.keyboard.down('Backspace');
+                await page.keyboard.type('1');
+                await page.keyboard.press('Enter');
+                await page.waitFor(1500);
+                await page.click(PRESET_DELETE_SELECTOR);
+                       
+            console.log("Presetler silindi.");
+            
+                console.log("Preset "+(1)+" ayarlanıyor..")
+                ////YATAY KONUMU GİR
+                await page.click(DOM_HORIZONTAL_SELECTOR);
+                await page.waitFor(1000);
+                for (let i = 0; i < 10; i++)
+                    await page.keyboard.down('Backspace');
+                await page.keyboard.type(horizontal[0]);
+                ////DIKEY KONUMU GIR
+                await page.click(DOM_VERTICAL_SELECTOR);
+                await page.waitFor(1000);
+                for (let i = 0; i < 10; i++)
+                    await page.keyboard.down('Backspace');
+                await page.keyboard.type(vertical[0]);
+                await page.waitFor(1000);
+                ////KONUMA GIT
+                await page.click(DOM_APPLY_LOCATION_SELECTOR);
+                await page.waitFor(5000);
+                ////KONUMU PRESET'E KAYDET
+                await page.click(PRESET_INDEX_SELECTOR);
+                for (let i = 0; i < 10; i++)
+                await page.keyboard.down('Backspace');
+                await page.keyboard.type('1');
+                await page.waitFor(1000);
+                await page.click(PRESET_NAME_SELECTOR);
+                for (let i = 0; i < 10; i++)
+                await page.keyboard.down('Backspace');
+                await page.keyboard.type('1');
+                await page.waitFor(1000);
+                await page.click(PRESET_SAVE_SELECTOR);
+                await page.waitFor(2000);
+                console.log("Preset "+(1)+" ayarlandı..")
+                
+
+            }
+        module.exports.set_preset_3_7= async function(page){
+            var horizontal = ["0","24000"];
+            var vertical = ["9000","0"];
+            console.log("Presetler siliniyor..")
+            
+                await page.waitFor(1000);
+                await page.click(PRESET_INDEX_SELECTOR);
+                await page.waitFor(1500);
+                for (let i = 0; i < 10; i++)
+                await page.keyboard.down('Backspace');
+                await page.keyboard.type('3');
+                await page.keyboard.press('Enter');
+                await page.waitFor(1500);
+                await page.click(PRESET_DELETE_SELECTOR);
+                await page.waitFor(1000);
+                await page.click(PRESET_INDEX_SELECTOR);
+                await page.waitFor(1500);
+                for (let i = 0; i < 10; i++)
+                await page.keyboard.down('Backspace');
+                await page.keyboard.type('7');
+                await page.keyboard.press('Enter');
+                await page.waitFor(1500);
+                await page.click(PRESET_DELETE_SELECTOR);
+                
+            
+            console.log("Presetler silindi.");
+            
+                console.log("Preset "+(3)+" ayarlanıyor..")
+                ////YATAY KONUMU GİR
+                await page.click(DOM_HORIZONTAL_SELECTOR);
+                await page.waitFor(1000);
+                for (let i = 0; i < 10; i++)
+                    await page.keyboard.down('Backspace');
+                await page.keyboard.type(horizontal[0]);
+                ////DIKEY KONUMU GIR
+                await page.click(DOM_VERTICAL_SELECTOR);
+                await page.waitFor(1000);
+                for (let i = 0; i < 10; i++)
+                    await page.keyboard.down('Backspace');
+                await page.keyboard.type(vertical[0]);
+                await page.waitFor(1000);
+                ////KONUMA GIT
+                await page.click(DOM_APPLY_LOCATION_SELECTOR);
+                await page.waitFor(5000);
+                ////KONUMU PRESET'E KAYDET
+                await page.click(PRESET_INDEX_SELECTOR);
+                for (let i = 0; i < 10; i++)
+                await page.keyboard.down('Backspace');
+                await page.keyboard.type('3');
+                await page.waitFor(1000);
+                await page.click(PRESET_NAME_SELECTOR);
+                for (let i = 0; i < 10; i++)
+                await page.keyboard.down('Backspace');
+                await page.keyboard.type('3');
+                await page.waitFor(1000);
+                await page.click(PRESET_SAVE_SELECTOR);
+                await page.waitFor(2000);
+                console.log("Preset "+(3)+" ayarlandı..")
+                console.log("Preset "+(7)+" ayarlanıyor..")
+                ////YATAY KONUMU GİR
+                await page.click(DOM_HORIZONTAL_SELECTOR);
+                await page.waitFor(1000);
+                for (let i = 0; i < 10; i++)
+                    await page.keyboard.down('Backspace');
+                await page.keyboard.type(horizontal[1]);
+                ////DIKEY KONUMU GIR
+                await page.click(DOM_VERTICAL_SELECTOR);
+                await page.waitFor(1000);
+                for (let i = 0; i < 10; i++)
+                    await page.keyboard.down('Backspace');
+                await page.keyboard.type(vertical[1]);
+                await page.waitFor(1000);
+                ////KONUMA GIT
+                await page.click(DOM_APPLY_LOCATION_SELECTOR);
+                await page.waitFor(5000);
+                ////KONUMU PRESET'E KAYDET
+                await page.click(PRESET_INDEX_SELECTOR);
+                for (let i = 0; i < 10; i++)
+                await page.keyboard.down('Backspace');
+                await page.keyboard.type('7');
+                await page.waitFor(1000);
+                await page.click(PRESET_NAME_SELECTOR);
+                for (let i = 0; i < 10; i++)
+                await page.keyboard.down('Backspace');
+                await page.keyboard.type('7');
+                await page.waitFor(1000);
+                await page.click(PRESET_SAVE_SELECTOR);
+                await page.waitFor(2000);
+                console.log("Preset "+(7)+" ayarlandı..")
+
+            }
+        
+        
          module.exports.set_patrol= async function(page){
             console.log("Patrol ayarlanıyor..")
             await page.click(PATROL_NAME_SELECTOR);
@@ -116,7 +260,7 @@ var readline = require('readline');
             var wait =1;
             const rl = readline.createInterface({input: process.stdin,output: process.stdout});
             await process.stdin.on("keypress",function(){
-             date = new Date();
+                date = new Date();
              data[0] = date.getHours();
              data[1] = date.getMinutes();
              data[2] = date.getSeconds();
@@ -124,6 +268,7 @@ var readline = require('readline');
              wait= !wait;
 
       });
+            
         while(wait) await page.waitFor(10);
             await rl.close();
         var return_value = data; 

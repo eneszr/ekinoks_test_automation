@@ -10,7 +10,7 @@
 	module.exports.test_alarm_active = async function(page)
         {
                         const input = await page.$(ALARM_ACTIVE_UP);
-                        const inpot = await input1.$eval('.ng-valid' , node => node.checked);
+                        const inpot = await input.$eval('.ng-valid' , node => node.checked);
                         return inpot;
         }
         module.exports.set_alarm_active = async function(page)
@@ -20,20 +20,19 @@
         module.exports.test_sei_selected = async function(page) 
         {
                         
-                        const input1 = await page.$(MOTION_DETECTOR_SELECTOR_UP);
-                        const inpot1 = await input1.$eval('.form-control' , node => node.value);
-                        
-                        if(inpot1 == 2)
-                        {console.log("Motion Detector Value is TRUE");
-                        }
-                        else
-                        {console.log("Motion Detector Value is FALSE");}
-                            
-                        
-  
-            
-	}
-	
+            const input1 = await page.$(MOTION_DETECTOR_SELECTOR_UP);
+            const inpot1 = await input1.$eval('.form-control' , node => node.value);
+            if(inpot1 == 2)
+            {
+                console.log("Hareket Tespit Değeri.....DOĞRU");
+                return 1;
+            }
+            else
+            {
+                console.log("Hareket Tespit Değeri.....YANLIŞ");
+                return 0;
+            }
+        }
 	
          module.exports.set_motion_detector = async function(page , set)
         {

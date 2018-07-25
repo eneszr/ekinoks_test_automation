@@ -50,8 +50,10 @@ async function interface (page)
             await interface(page);
 }    
 let testIt = async () => {
-   ip = await question.ask("Test edilecek kameranın ip adresini girin:  ");
-   
+   ip = await question.ask("Test edilecek kameranın ip adresini girin:  "); //'10.5.177.46'//
+   url = 'http://'+ ip + ':8080';
+   dom_url = 'http://10.5.177.164:8080';
+   dom_ip = '10.5.177.164';
   
     select_cam_type = await question.ask("Kamera tipini seçin Sabit Kamera => 1 DOM => 2  ");
    
@@ -59,14 +61,14 @@ let testIt = async () => {
     {
         browser = await puppeteer.launch({headless: false});
         page = await browser.newPage();
-        await login.loginCamera(page, ip);
+        await login.loginCamera(page, url);
         select_cam = 1;
     }
     else if(select_cam_type == 2)
     {
-        browser = await puppeteer.launch({headless: false});
+        browser = await puppeteer.launch({headless: false, args: ['--start-fullscreen']});
         page = await browser.newPage();
-        await login_dome.loginCamera(page, ip);
+        await login_dome.loginCamera(page, dom_url);
         select_cam = 2;
     }
     else
@@ -87,7 +89,7 @@ let testIt = async () => {
         else if (select == "t" || select== "T") await interface(page);
         else {console.log("Hatalı Tuşlama Yaptınız. Çıkmak İçin C Tuşuna Basabilirsiniz. Test Aşamasına Geçildi..");
         await interface(page);}
- // await tests.start_2(page,"125",ip);
+ // await tests.start_2(page,"125",dom_ip);
         return select_cam;
         await page.waitFor(30000);
         await page.close();

@@ -12,12 +12,14 @@ var result = require('./result.js');
     const PPP_PRESET_APPLY_BUTTON_SELECTOR='#button_s';
     const PPP_PATROL_PRESET_RANKING='#patrol_list';
     const PPP_PATROL_TIME_INTERVAL='#patrol_interval';
+    const PPP_PATROL_STOP = '#patrol_stop';
     const PPP_RUN_BUTTON_SELECTOR='#patrol_run';
     const PPP_PATTERN_ID='#patternTag';
     const PPP_PATTERN_START_BUTTON='#buttonStart';
     const PPP_PATTERN_STOP_BUTTON='#buttonStop';
     const PPP_PATTERN_RUN_BUTTON='#buttonRun';
     const PPP_PATTERN_DELETE_BUTTON='#buttonDelete';
+    const PPP_PATTERN_CANCEL_BUTTON= '#buttonCancel';
     const PTZ_ZOOM='#t01 > tbody > tr:nth-child(6) > td:nth-child(1) > table > tbody > tr > td:nth-child(1) > p:nth-child(3) > button:nth-child(2)';
     const PTZ_LEFT='#t01 > tbody > tr:nth-child(6) > td:nth-child(1) > table > tbody > tr > td:nth-child(1) > p:nth-child(3) > button:nth-child(1)';
     const PTZ_RIGHT='#t01 > tbody > tr:nth-child(6) > td:nth-child(1) > table > tbody > tr > td:nth-child(1) > p:nth-child(3) > button:nth-child(4)';
@@ -31,8 +33,7 @@ var result = require('./result.js');
     const IR_FILTER_TRANSITION = '#auto_ircf_stat';
     const NEW_SELECT = '#t01 > tbody > tr:nth-child(4) > td > table > tbody > tr > td:nth-child(2)';
     const AUTOPAN_STOP_SELECTOR_UP = '#t01 > tbody > tr:nth-child(4) > td > table > tbody > tr > td:nth-child(3)';
-  
-    
+ 
         module.exports.set_ir_filter_mode = async function(page, set) 
         {
             await page.waitFor(2000);
@@ -71,28 +72,27 @@ var result = require('./result.js');
         module.exports.turn_left= async function(page){
             
             await page.click(PPP_BUTTON_LEFT);
-            console.log("camera is turning left");
+            console.log("Kamera sola dönüyor.");
             await page.waitFor(2000);
           
         }
         module.exports.turn_right= async function(page){
             
             await page.click(PPP_BUTTON_RIGHT);
-            console.log("camera is turning right");
+            console.log("Kamera sağa dönüyor.");
             await page.waitFor(2000);
           
         }
         module.exports.stop= async function(page){
             
             await page.click(PPP_BUTTON_STOP);
-            console.log("camera is stopped");
+            console.log("Kamera durduruldu.");
           
         }
         module.exports.stop_isactive = async function(page)
         {
             const input1 = await page.$(AUTOPAN_STOP_SELECTOR_UP);
                 const inpot1 = await input1.$eval('#autoST' , node => node.style.visibility);
-                console.log("Stop butonu görünütlüğü = "+inpot1);
                 return inpot1;
             
         }
@@ -180,6 +180,10 @@ var result = require('./result.js');
             await page.click(PPP_RUN_BUTTON_SELECTOR);
             
         }
+        module.exports.patrol_stop = async function(page)
+        {
+            await page.click(PPP_PATROL_STOP);
+        }
         //////////////Pattern tanımlama-Patterni çalıştırma//////
         module.exports.set_pattern = async function(page){
             await page.click(PPP_PATTERN_ID);
@@ -216,6 +220,15 @@ var result = require('./result.js');
             
             console.log("Desen başlatıldı");
             
+        }
+        module.exports.pattern_stop = async function(page )
+        {
+            await page.click(PPP_PATTERN_STOP_BUTTON);
+        }
+        
+        module.exports.pattern_cancel = async function(page)
+        {
+            await page.click(PPP_PATTERN_CANCEL_BUTTON);
         }
         //////PAN ,TILT ,ZOOM
         module.exports.PTZ= async function(page){

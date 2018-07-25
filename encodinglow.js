@@ -11,8 +11,7 @@
         const BIT_CON_MET_UP = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(2) > div > div';
         const CODDING_QUAL_UP = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(3) > div > div';
         const BIT_RATE_UP = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(6) > div > div';
-               
-        
+        const BIT_CALC_MET = 'body > div > div:nth-child(3) > div.col-md-8 > div.view-container > div > form > div:nth-child(4) > div > div > select';
 	module.exports.set_intraframe = async function(page, iFrameInterval) {
 		await page.click(IFRAME_SELECTOR);
 		for (let i = 0; i < 10; i++)
@@ -55,7 +54,13 @@
             await page.waitFor(1000);
             
         }
-        
+        	module.exports.set_calc_method = async function(page, set) {
+		await page.click(BIT_CALC_MET);
+            await page.keyboard.type(set);
+            await page.keyboard.type(set);
+            await page.click(BIT_CALC_MET);
+		
+	}
         
         //////////////  ENCODİNG LOW TEST ////////////////
         
@@ -64,12 +69,13 @@
                         const inpot1 = await input1.$eval('.form-control' , node => node.value);
                         if(inpot1 == 12)
                         {
-                            console.log("Intraframe Value is        TRUE");
+                            console.log("Intraframe Aralığı Değeri.....DOĞRU");
+                            return 1;
                         }
                         else
                         {
-                            console.log("Intraframe Value is        FALSE");
-                            
+                            console.log("Intraframe Aralığı Değeri.....YANLIŞ");
+                            return 0;
                         }
             
 	}
@@ -80,12 +86,13 @@
                         const inpot2 = await input2.$eval('.form-control' , node => node.selectedIndex);
                         if(inpot2 == 2)
                         {
-                            console.log("Bit Control Value is       TRUE");
+                            console.log("Bitrate Kontrol Metodu.....DOĞRU");
+                            return 1;
                         }
                         else
                         {
-                            console.log("Bit Control Value is       FALSE");
-                            
+                            console.log("Bitrate Kontrol Metodu.....YANLIŞ");
+                            return 0;
                         }
             
         }     
@@ -95,12 +102,13 @@
                         const inpot4 = await input4.$eval('.form-control' , node => node.value);
                         if(inpot4 == 0.477)
                         {
-                            console.log("Bit Rate Value is          TRUE");
+                            console.log("Bitrate Değeri.....DOĞRU");
+                            return 1;
                         }
                         else
                         {
-                            console.log("Bit Rate Value is          FALSE");
-                            
+                            console.log("Bitrate Değeri.....YANLIŞ");
+                            return 0;
                         }
 		
 	}
@@ -113,12 +121,13 @@
                         const inpot3 = await input3.$eval('.form-control' , node => node.selectedIndex);
                         if(inpot3 == 3)
                         {
-                            console.log("Encoding Quality Value is  TRUE");
+                            console.log("Kodlayıcı Kalitesi.....DOĞRU");
+                            return 1;
                         }
                         else
                         {
-                            console.log("Encoding Quality Value is  FALSE");
-                            
+                            console.log("Kodlayıcı Kalitesi.....YANLIŞ");
+                            return 0;
                         }
           
         }
